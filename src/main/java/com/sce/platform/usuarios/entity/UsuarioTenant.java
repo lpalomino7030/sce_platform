@@ -1,0 +1,48 @@
+package com.sce.platform.usuarios.entity;
+
+import com.sce.platform.empresas.entity.Tenant;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.OffsetDateTime;
+
+@Entity
+@Table(name = "usuarios_tenants")
+@Getter
+@Setter
+@NoArgsConstructor
+public class UsuarioTenant {
+
+    @EmbeddedId
+    private UsuarioTenantId id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @MapsId("usuarioId")
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @MapsId("tenantId")
+    @JoinColumn(name = "tenant_id", nullable = false)
+    private Tenant tenant;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, length = 30)
+    private UsuarioTenantRole role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false, length = 20)
+    private UsuarioTenantEstado estado;
+
+    @CreatedDate
+    @Column(name = "fecha_union", nullable = false, updatable = false)
+    private OffsetDateTime fechaUnion;
+
+
+
+
+
+}
