@@ -7,12 +7,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
 @Table(name = "usuarios")
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -42,9 +44,9 @@ public class Usuario {
 
     @CreatedDate
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
-    private OffsetDateTime fechaCreacion;
+    private Instant fechaCreacion;
 
     @LastModifiedDate
     @Column(name = "fecha_actualizacion", nullable = false)
-    private OffsetDateTime fechaActualizacion;
+    private Instant fechaActualizacion;
 }

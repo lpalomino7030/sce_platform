@@ -6,11 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "usuarios_tenants")
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -39,10 +41,7 @@ public class UsuarioTenant {
 
     @CreatedDate
     @Column(name = "fecha_union", nullable = false, updatable = false)
-    private OffsetDateTime fechaUnion;
-
-
-
+    private Instant fechaUnion;
 
 
 }

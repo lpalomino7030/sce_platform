@@ -10,4 +10,5 @@ public class ScePlatformApplication {
     public static void main(String[] args) {
         SpringApplication.run(ScePlatformApplication.class, args);
     }
+
 }
