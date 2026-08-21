@@ -1,9 +1,7 @@
 package com.sce.platform.usuarios.service;
 
 import com.sce.platform.empresas.entity.Tenant;
-import com.sce.platform.usuarios.entity.Usuario;
-import com.sce.platform.usuarios.entity.UsuarioTenant;
-import com.sce.platform.usuarios.entity.UsuarioTenantRole;
+import com.sce.platform.usuarios.entity.*;
 import com.sce.platform.usuarios.repository.UsuarioTenantRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +15,20 @@ public class UsuarioTenantService {
 
     public UsuarioTenant asociar (Tenant tenant, Usuario usuario, UsuarioTenantRole role) {
 
+        UsuarioTenantId id = new UsuarioTenantId(
+               tenant.getId(),
+                usuario.getId()
+        );
+
         UsuarioTenant usuarioTenant = new UsuarioTenant();
 
+        usuarioTenant.setId(id);
+        usuarioTenant.setUsuario(usuario);
+        usuarioTenant.setTenant(tenant);
+        usuarioTenant.setRole(role);
+        usuarioTenant.setEstado(UsuarioTenantEstado.ACTIVE);
 
-
-        return
+        return  usuarioTenantRepository.save(usuarioTenant);
     }
 
 }
