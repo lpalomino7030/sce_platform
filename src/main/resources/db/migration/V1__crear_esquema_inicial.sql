@@ -24,6 +24,10 @@ CREATE TABLE tenants (
                          razon_social VARCHAR(200) NOT NULL,
                          ruc VARCHAR(11) NOT NULL,
 
+    -- Identificador técnico y legible de la empresa.
+    -- Ejemplo: torqueg46
+                         slug VARCHAR(100) NOT NULL,
+
                          estado VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
 
                          fecha_creacion TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -31,6 +35,9 @@ CREATE TABLE tenants (
 
                          CONSTRAINT uq_tenants_ruc
                              UNIQUE (ruc),
+
+                         CONSTRAINT uq_tenants_slug
+                             UNIQUE (slug),
 
                          CONSTRAINT ck_tenants_estado
                              CHECK (
@@ -98,6 +105,10 @@ CREATE TABLE usuarios_tenants (
                                   tenant_id UUID NOT NULL,
                                   usuario_id UUID NOT NULL,
 
+    -- Identificador de acceso del usuario dentro de SCE.
+    -- Ejemplo: luis@torqueg46
+                                  identificador_sce VARCHAR(150) NOT NULL,
+
                                   role VARCHAR(30) NOT NULL DEFAULT 'USER',
 
                                   estado VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
@@ -116,6 +127,9 @@ CREATE TABLE usuarios_tenants (
                                       FOREIGN KEY (usuario_id)
                                           REFERENCES usuarios(id)
                                           ON DELETE CASCADE,
+
+                                  CONSTRAINT uq_usuarios_tenants_identificador_sce
+                                      UNIQUE (identificador_sce),
 
                                   CONSTRAINT ck_usuarios_tenants_role
                                       CHECK (

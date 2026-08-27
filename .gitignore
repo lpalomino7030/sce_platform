@@ -31,3 +31,13 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local configuration ###
+.env
+.env.*
+!.env.example
+
+### Spring Boot local configuration ###
+application-local.properties
+application-local.yml
+application-local.yaml

@@ -31,6 +31,14 @@ public class UsuarioTenant {
     @JoinColumn(name = "tenant_id", nullable = false)
     private Tenant tenant;
 
+    @Column(
+            name = "identificador_sce",
+            nullable = false,
+            unique = true,
+            length = 150
+    )
+    private String identificadorSce;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 30)
     private UsuarioTenantRole role;

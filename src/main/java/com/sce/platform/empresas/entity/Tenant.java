@@ -32,6 +32,9 @@ public class Tenant {
     @Column(name = "ruc", nullable = false, unique = true, length = 11)
     private String ruc;
 
+    @Column(name = "slug", nullable = false, unique = true, length = 100)
+    private String slug;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 20)
     private TenantEstado estado;
