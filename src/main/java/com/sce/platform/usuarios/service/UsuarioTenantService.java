@@ -11,8 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class UsuarioTenantService {
 
     private final UsuarioTenantRepository usuarioTenantRepository;
-    public UsuarioTenantService(UsuarioTenantRepository usuarioTenantRepository) {
+    private final GenerateIdentificador generateIdentificador;
+
+    public UsuarioTenantService(UsuarioTenantRepository usuarioTenantRepository, GenerateIdentificador generateIdentificador) {
         this.usuarioTenantRepository = usuarioTenantRepository;
+        this.generateIdentificador = generateIdentificador;
     }
 
     @Transactional
@@ -55,12 +58,22 @@ public class UsuarioTenantService {
                 usuario.getId()
         );
 
+
+        String identificador = generateIdentificador.generar(usuario.getNombreUsuario(),tenant.getSlug());
+
+        boolean identificadorExiste = usuarioTenantRepository.existsByIdentificadorSce(identificador);
+
+        if (identificadorExiste){
+            throw new IllegalStateException("El usuario ya existe en el sistema");
+        }
+
         // 5. Crear UsuarioTenant
         UsuarioTenant usuarioTenant = new UsuarioTenant();
 
         usuarioTenant.setId(id);
         usuarioTenant.setUsuario(usuario);
         usuarioTenant.setTenant(tenant);
+        usuarioTenant.setIdentificadorSce(identificador);
         usuarioTenant.setRole(role);
         usuarioTenant.setEstado(UsuarioTenantEstado.ACTIVE);
 

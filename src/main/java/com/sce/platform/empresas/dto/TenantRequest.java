@@ -1,6 +1,7 @@
 package com.sce.platform.empresas.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,6 @@ public class TenantRequest {
     @Size(max = 200)
     private String razonSocial;
     @NotBlank
-    @Size(max = 11)
+    @Pattern(regexp = "\\d{11}", message = "El RUC debe contener exactamente 11 dígitos")
     private String ruc;
 }

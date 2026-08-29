@@ -13,4 +13,7 @@ public interface UsuarioTenantRepository extends JpaRepository<UsuarioTenant, Us
 
     boolean existsByIdTenantIdAndIdUsuarioId (UUID tenantId, UUID usuarioId);
     List<UsuarioTenant> findByUsuario(Usuario usuario);
+
+    boolean existsByIdentificadorSce(String identificadorSce);
+
 }
