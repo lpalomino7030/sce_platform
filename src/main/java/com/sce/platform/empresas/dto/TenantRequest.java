@@ -1,5 +1,6 @@
 package com.sce.platform.empresas.dto;
 
+import com.sce.platform.usuarios.dto.CrearUsuarioRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -20,4 +21,7 @@ public class TenantRequest {
     @NotBlank
     @Pattern(regexp = "\\d{11}", message = "El RUC debe contener exactamente 11 dígitos")
     private String ruc;
+
+    // propietario inicial
+    private CrearUsuarioRequest usuario;
 }

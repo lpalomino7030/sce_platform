@@ -15,7 +15,6 @@ public class SlugGenerator {
                 normalizacion,
                 Normalizer.Form.NFD
         );
-
         normalizacion = normalizacion.replaceAll("\\p{M}", "");
 
         normalizacion = normalizacion.replaceAll("[^a-z0-9]", "");

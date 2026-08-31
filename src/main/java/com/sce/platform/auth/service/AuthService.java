@@ -2,6 +2,7 @@ package com.sce.platform.auth.service;
 
 import com.sce.platform.auth.dto.LoginRequest;
 import com.sce.platform.auth.dto.LoginResponse;
+import com.sce.platform.auth.dto.ResultadoAutenticacion;
 import com.sce.platform.auth.dto.TenantDisponibleResponse;
 import com.sce.platform.usuarios.entity.Usuario;
 import com.sce.platform.usuarios.entity.UsuarioEstado;
@@ -9,11 +10,12 @@ import com.sce.platform.usuarios.entity.UsuarioTenant;
 import com.sce.platform.usuarios.entity.UsuarioTenantEstado;
 import com.sce.platform.usuarios.repository.UsuarioRepository;
 import com.sce.platform.usuarios.repository.UsuarioTenantRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -28,11 +30,26 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Usuario autenticar(LoginRequest request) {
+    public ResultadoAutenticacion autenticar(LoginRequest request) {
 
-        Usuario usuario = usuarioRepository.findByNombreUsuario(request.getUsername()).orElseThrow(() ->
-                new IllegalStateException("Credenciales inválidas")
-        );
+
+        Usuario usuario = null;
+        UsuarioTenant usuarioTenant = null;
+        if (request.getUsername().contains("@")) {
+            usuarioTenant = datosIdentificador(request.getUsername())
+                    .orElseThrow(() ->
+                            new IllegalStateException(
+                                    "El identificador no existe en el sistema"
+                            )
+                    );
+
+            usuario = usuarioTenant.getUsuario();
+
+        } else{
+            usuario = usuarioRepository.findByNombreUsuario(request.getUsername()).orElseThrow(() ->
+                    new IllegalStateException("Credenciales inválidas")
+            );
+        }
 
         String passwordHash = usuario.getPasswordHash();
 
@@ -46,46 +63,81 @@ public class AuthService {
         {throw new IllegalStateException("Credenciales inválidas");
         }
 
-        return usuario;
+        ResultadoAutenticacion resultado = new ResultadoAutenticacion();
+        resultado.setUsuario(usuario);
+        resultado.setUsuarioTenant(usuarioTenant);
+
+        return resultado;
 
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public LoginResponse login(LoginRequest request) {
-        Usuario usuario = autenticar(request);
 
-        List<UsuarioTenant> relaciones = usuarioTenantRepository.findByUsuario(usuario).stream().filter(relacion ->
-                relacion.getEstado() == UsuarioTenantEstado.ACTIVE
-        ).toList();
 
-        //Relaciones
-        List<TenantDisponibleResponse> tenants =
-                relaciones.stream()
-                        .map(relacion -> {
-                            TenantDisponibleResponse dto =
-                                    new TenantDisponibleResponse();
+        ResultadoAutenticacion autenticacion = autenticar(request);
 
-                            dto.setId(relacion.getTenant().getId());
-                            dto.setNombre(relacion.getTenant().getNombre());
-                            dto.setRole(relacion.getRole());
-
-                            return dto;
-                        })
-                        .toList();
-
-        //Login response
+        Usuario usuario = autenticacion.getUsuario();
+        UsuarioTenant usuarioTenant = autenticacion.getUsuarioTenant();
 
         LoginResponse response = new LoginResponse();
-        response.setTenants(tenants);
+
         response.setNombres(usuario.getNombres());
         response.setNombreUsuario(usuario.getNombreUsuario());
         response.setUsuarioId(usuario.getId());
+
+        if (usuarioTenant != null) {
+            TenantDisponibleResponse disponible = obtenerTenant(usuarioTenant);
+
+           response.setTenantSeleccionado(disponible);
+
+        } else if (usuarioTenant == null) {
+            List<UsuarioTenant> relaciones = obtenerRelacionTenant(usuario);
+            response.setTenants(obtenerTenants(relaciones));
+        }
+
+
 
 
         return response;
     }
 
+    public Optional<UsuarioTenant> datosIdentificador(String identificador) {
 
+        return usuarioTenantRepository.findByIdentificadorSce(identificador);
+    }
 
+    public List<UsuarioTenant> obtenerRelacionTenant(Usuario usuario){
 
+        return usuarioTenantRepository.findByUsuario(usuario).stream().filter(relacion ->
+                relacion.getEstado() == UsuarioTenantEstado.ACTIVE
+        ).toList();
+    }
+
+    public List<TenantDisponibleResponse> obtenerTenants(List<UsuarioTenant> relaciones){
+        //Relaciones
+
+        return relaciones.stream()
+                .map(relacion -> {
+                    TenantDisponibleResponse dto =
+                            new TenantDisponibleResponse();
+
+                    dto.setId(relacion.getTenant().getId());
+                    dto.setNombre(relacion.getTenant().getNombre());
+                    dto.setRole(relacion.getRole());
+
+                    return dto;
+                })
+                .toList();
+    }
+    public TenantDisponibleResponse obtenerTenant(UsuarioTenant relacion) {
+
+        TenantDisponibleResponse dto = new TenantDisponibleResponse();
+
+        dto.setId(relacion.getTenant().getId());
+        dto.setNombre(relacion.getTenant().getNombre());
+        dto.setRole(relacion.getRole());
+
+        return dto;
+    }
 }

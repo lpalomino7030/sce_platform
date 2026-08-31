@@ -15,5 +15,6 @@ public class LoginResponse {
     private String nombreUsuario;
     private String nombres;
 
+    private TenantDisponibleResponse tenantSeleccionado;
     private List<TenantDisponibleResponse> tenants;
 }

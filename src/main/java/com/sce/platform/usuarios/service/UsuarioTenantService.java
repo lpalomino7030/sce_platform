@@ -7,6 +7,8 @@ import com.sce.platform.usuarios.repository.UsuarioTenantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class UsuarioTenantService {
 
@@ -80,7 +82,6 @@ public class UsuarioTenantService {
         // 6. Guardar
         return usuarioTenantRepository.save(usuarioTenant);
     }
-
 
 
 }
