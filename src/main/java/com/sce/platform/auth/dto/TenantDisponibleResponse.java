@@ -1,6 +1,6 @@
 package com.sce.platform.auth.dto;
 
-import com.sce.platform.usuarios.entity.UsuarioTenantRole;
+import com.sce.platform.usuarios.enums.UsuarioTenantRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

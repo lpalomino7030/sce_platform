@@ -1,5 +1,6 @@
 package com.sce.platform.empresas.entity;
 
+import com.sce.platform.empresas.enums.TenantEstado;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

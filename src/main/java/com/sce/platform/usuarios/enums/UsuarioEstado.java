@@ -1,4 +1,4 @@
-package com.sce.platform.usuarios.entity;
+package com.sce.platform.usuarios.enums;
 
 public enum UsuarioEstado {
     ACTIVE,

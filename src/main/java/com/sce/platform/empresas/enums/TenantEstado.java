@@ -1,4 +1,4 @@
-package com.sce.platform.empresas.entity;
+package com.sce.platform.empresas.enums;
 
 public enum TenantEstado {
     ACTIVE,

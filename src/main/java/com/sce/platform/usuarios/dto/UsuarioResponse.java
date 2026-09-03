@@ -1,6 +1,6 @@
 package com.sce.platform.usuarios.dto;
 
-import com.sce.platform.usuarios.entity.UsuarioEstado;
+import com.sce.platform.usuarios.enums.UsuarioEstado;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

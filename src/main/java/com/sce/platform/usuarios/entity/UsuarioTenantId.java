@@ -13,9 +13,7 @@ import java.util.UUID;
 @EqualsAndHashCode
 public class UsuarioTenantId {
 
-
     private UUID tenantId;
-
     private UUID usuarioId;
 
 }

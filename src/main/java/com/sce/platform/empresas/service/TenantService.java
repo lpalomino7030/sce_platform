@@ -2,11 +2,11 @@ package com.sce.platform.empresas.service;
 
 import com.sce.platform.empresas.dto.TenantRequest;
 import com.sce.platform.empresas.entity.Tenant;
-import com.sce.platform.empresas.entity.TenantEstado;
+import com.sce.platform.empresas.enums.TenantEstado;
 import com.sce.platform.empresas.repository.TenantRepository;
 import com.sce.platform.usuarios.entity.Usuario;
-import com.sce.platform.usuarios.entity.UsuarioEstado;
-import com.sce.platform.usuarios.entity.UsuarioTenantRole;
+import com.sce.platform.usuarios.enums.UsuarioEstado;
+import com.sce.platform.usuarios.enums.UsuarioTenantRole;
 import com.sce.platform.usuarios.service.UsuarioService;
 import com.sce.platform.usuarios.service.UsuarioTenantService;
 import org.springframework.transaction.annotation.Transactional;

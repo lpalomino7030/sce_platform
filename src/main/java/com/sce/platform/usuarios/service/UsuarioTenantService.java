@@ -1,19 +1,21 @@
 package com.sce.platform.usuarios.service;
 
 import com.sce.platform.empresas.entity.Tenant;
-import com.sce.platform.empresas.entity.TenantEstado;
+import com.sce.platform.empresas.enums.TenantEstado;
 import com.sce.platform.usuarios.entity.*;
+import com.sce.platform.usuarios.enums.UsuarioEstado;
+import com.sce.platform.usuarios.enums.UsuarioTenantEstado;
+import com.sce.platform.usuarios.enums.UsuarioTenantRole;
 import com.sce.platform.usuarios.repository.UsuarioTenantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class UsuarioTenantService {
 
     private final UsuarioTenantRepository usuarioTenantRepository;
     private final GenerateIdentificador generateIdentificador;
+    private static final int MAX_TENANTS_POR_USUARIO = 2;
 
     public UsuarioTenantService(UsuarioTenantRepository usuarioTenantRepository, GenerateIdentificador generateIdentificador) {
         this.usuarioTenantRepository = usuarioTenantRepository;
@@ -54,6 +56,12 @@ public class UsuarioTenantService {
             );
         }
 
+        long cantidad = usuarioTenantRepository.countByIdUsuarioId(usuario.getId());
+
+        if (cantidad >= MAX_TENANTS_POR_USUARIO) {
+            throw new IllegalStateException("El usuario ya pertenece al maximo de "+MAX_TENANTS_POR_USUARIO+" tenants permitidos");
+        }
+
         // 4. Construir UsuarioTenantId
         UsuarioTenantId id = new UsuarioTenantId(
                 tenant.getId(),
@@ -66,7 +74,7 @@ public class UsuarioTenantService {
         boolean identificadorExiste = usuarioTenantRepository.existsByIdentificadorSce(identificador);
 
         if (identificadorExiste){
-            throw new IllegalStateException("El usuario ya existe en el sistema");
+            throw new IllegalStateException("El identificador ya esta en uso");
         }
 
         // 5. Crear UsuarioTenant

@@ -1,6 +1,7 @@
 package com.sce.platform.usuarios.entity;
 
 
+import com.sce.platform.usuarios.enums.UsuarioEstado;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

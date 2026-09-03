@@ -4,7 +4,7 @@ package com.sce.platform.usuarios.controller;
 import com.sce.platform.usuarios.dto.CrearUsuarioRequest;
 import com.sce.platform.usuarios.dto.UsuarioResponse;
 import com.sce.platform.usuarios.entity.Usuario;
-import com.sce.platform.usuarios.entity.UsuarioEstado;
+import com.sce.platform.usuarios.enums.UsuarioEstado;
 import com.sce.platform.usuarios.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

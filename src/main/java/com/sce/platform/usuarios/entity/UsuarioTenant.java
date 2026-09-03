@@ -1,6 +1,8 @@
 package com.sce.platform.usuarios.entity;
 
 import com.sce.platform.empresas.entity.Tenant;
+import com.sce.platform.usuarios.enums.UsuarioTenantEstado;
+import com.sce.platform.usuarios.enums.UsuarioTenantRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
