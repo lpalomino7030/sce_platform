@@ -1,6 +1,6 @@
 package com.sce.platform.empresas.dto;
 
-import com.sce.platform.usuarios.dto.CrearUsuarioRequest;
+import com.sce.platform.usuarios.dto.UsuarioRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -23,5 +23,5 @@ public class TenantRequest {
     private String ruc;
 
     // propietario inicial
-    private CrearUsuarioRequest usuario;
+    private UsuarioRequest usuario;
 }

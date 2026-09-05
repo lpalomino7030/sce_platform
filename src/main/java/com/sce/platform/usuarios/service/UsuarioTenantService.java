@@ -79,7 +79,7 @@ public class UsuarioTenantService {
         boolean identificadorExiste = usuarioTenantRepository.existsByIdentificadorSce(identificador);
 
         if (identificadorExiste){
-            throw new IllegalStateException("El identificador ya esta en uso");
+            throw new IllegalStateException("El usuario ya existe en el sistema");
         }
 
         // 5. Crear UsuarioTenant

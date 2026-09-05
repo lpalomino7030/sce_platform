@@ -1,7 +1,13 @@
 package com.sce.platform.usuarios.service;
 
+import com.sce.platform.empresas.dto.TenantRequest;
+import com.sce.platform.usuarios.dto.UsuarioRequest;
+import com.sce.platform.usuarios.dto.UsuarioResponse;
 import com.sce.platform.usuarios.entity.Usuario;
+import com.sce.platform.usuarios.entity.UsuarioTenant;
+import com.sce.platform.usuarios.enums.UsuarioTenantRole;
 import com.sce.platform.usuarios.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +52,17 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    @Transactional
+    public UsuarioTenant crearUsuarioEnTenant(TenantRequest tenantRequest, UsuarioRequest request, UsuarioTenantRole role) {
+
+        // esta funcion sirve para poder crear un usuario desde el perfil owner o dentro de un tenant y asociarlo.
+
+
+        UsuarioTenant usuarioTenant = new UsuarioTenant();
+
+        return usuarioTenant;
+
+    }
 
 
 }

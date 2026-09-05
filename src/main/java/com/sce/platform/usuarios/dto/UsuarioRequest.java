@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CrearUsuarioRequest {
+public class UsuarioRequest {
 
     @NotBlank
     @Size(max = 50)
