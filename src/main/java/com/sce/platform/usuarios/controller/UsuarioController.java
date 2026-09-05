@@ -41,6 +41,7 @@ public class UsuarioController {
         response.setCorreo(usuarioCreado.getCorreo());
         response.setNombres(usuarioCreado.getNombres());
         response.setApellidos(usuarioCreado.getApellidos());
+        response.setCodigoSce(usuarioCreado.getCodigoSce());
         response.setEstado(usuarioCreado.getEstado());
         response.setFechaCreacion(usuarioCreado.getFechaCreacion());
         response.setFechaActualizacion(usuarioCreado.getFechaActualizacion());

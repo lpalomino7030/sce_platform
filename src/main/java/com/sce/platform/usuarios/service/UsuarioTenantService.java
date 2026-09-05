@@ -6,20 +6,25 @@ import com.sce.platform.usuarios.entity.*;
 import com.sce.platform.usuarios.enums.UsuarioEstado;
 import com.sce.platform.usuarios.enums.UsuarioTenantEstado;
 import com.sce.platform.usuarios.enums.UsuarioTenantRole;
+import com.sce.platform.usuarios.repository.UsuarioRepository;
 import com.sce.platform.usuarios.repository.UsuarioTenantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.sce.platform.usuarios.enums.SolicitudUsuarioTenantEstado.PENDING;
 
 @Service
 public class UsuarioTenantService {
 
     private final UsuarioTenantRepository usuarioTenantRepository;
+    private final UsuarioRepository usuarioRepository;
     private final GenerateIdentificador generateIdentificador;
     private static final int MAX_TENANTS_POR_USUARIO = 2;
 
-    public UsuarioTenantService(UsuarioTenantRepository usuarioTenantRepository, GenerateIdentificador generateIdentificador) {
+    public UsuarioTenantService(UsuarioRepository usuarioRepository,  UsuarioTenantRepository usuarioTenantRepository, GenerateIdentificador generateIdentificador) {
         this.usuarioTenantRepository = usuarioTenantRepository;
         this.generateIdentificador = generateIdentificador;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Transactional
@@ -90,6 +95,9 @@ public class UsuarioTenantService {
         // 6. Guardar
         return usuarioTenantRepository.save(usuarioTenant);
     }
+
+
+
 
 
 }

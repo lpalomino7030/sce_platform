@@ -17,6 +17,7 @@ public class UsuarioResponse {
     private String correo;
     private String nombres;
     private String apellidos;
+    private String codigoSce;
     private UsuarioEstado estado;
     private Instant fechaCreacion;
     private Instant fechaActualizacion;

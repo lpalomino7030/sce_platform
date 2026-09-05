@@ -24,6 +24,14 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(
+            name = "codigo_sce",
+            nullable = false,
+            unique = true,
+            length = 10
+    )
+    private String codigoSce;
+
     @Column(name = "nombre_usuario", unique = true,nullable = false, length = 50)
     private String nombreUsuario;
 

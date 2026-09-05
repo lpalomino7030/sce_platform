@@ -14,4 +14,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
     Optional<Usuario> findByNombreUsuario(String nombreUsuario);
 
+    Optional<Usuario> findByCodigoSce(String codigoSce);
+
+    Boolean existsByCodigoSce(String codigoSce);
 }

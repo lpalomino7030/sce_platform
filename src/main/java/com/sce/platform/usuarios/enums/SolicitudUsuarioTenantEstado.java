@@ -10,5 +10,5 @@ public enum SolicitudUsuarioTenantEstado {
     //Venció el plazo
     EXPIRED,
     //El solicitante retiró la solicitud
-    CANCELLED
+    CANCELED
 }
