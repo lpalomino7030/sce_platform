@@ -19,4 +19,9 @@ public interface UsuarioTenantRepository extends JpaRepository<UsuarioTenant, Us
     Optional<UsuarioTenant> findByIdentificadorSce(String identificadorSce);
 
     long countByIdUsuarioId(UUID usuarioId);
+
+    Optional<UsuarioTenant> findByIdUsuarioIdAndIdTenantId(
+            UUID usuarioId,
+            UUID tenantId
+    );
 }
