@@ -45,6 +45,9 @@ public class UsuarioService {
             throw new IllegalStateException("El nombre usuario ya existe");
         }
 
+        if (password.length() < 6) {
+            throw new IllegalStateException("la contraseña es muy corta.");
+        }
         String passwordHash = passwordEncoder.encode(password);
 
         usuario.setPasswordHash(passwordHash);

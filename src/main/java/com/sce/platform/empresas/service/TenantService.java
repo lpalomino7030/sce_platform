@@ -4,7 +4,7 @@ import com.sce.platform.empresas.dto.TenantRequest;
 import com.sce.platform.empresas.entity.Tenant;
 import com.sce.platform.empresas.enums.TenantEstado;
 import com.sce.platform.empresas.repository.TenantRepository;
-import com.sce.platform.usuarios.dto.CrearUsuarioRequest;
+import com.sce.platform.usuarios.dto.UsuarioRequest;
 import com.sce.platform.usuarios.entity.Usuario;
 import com.sce.platform.usuarios.entity.UsuarioTenant;
 import com.sce.platform.usuarios.enums.UsuarioEstado;
@@ -86,7 +86,7 @@ public class TenantService {
     public Usuario crearUsuarioParaTenant(
             Usuario creador,
             Tenant tenant,
-            CrearUsuarioRequest request,
+            UsuarioRequest request,
             UsuarioTenantRole role
     ) {
 
