@@ -11,6 +11,4 @@ public interface TenantRepository extends JpaRepository<Tenant, UUID> {
     boolean existsBySlug(String slug);
     boolean existsByRuc(String ruc);
 
-
-
 }
