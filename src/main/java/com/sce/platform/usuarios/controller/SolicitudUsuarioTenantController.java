@@ -34,14 +34,12 @@ public class SolicitudUsuarioTenantController {
     ) {
 
         Usuario solicitante = usuarioRepository
-                .findById(UUID.fromString(
-                        "80ce3f65-97b0-47bd-9082-d4da99e3b55c"
-                ))
-                .orElseThrow(() ->
-                        new IllegalStateException(
-                                "El usuario solicitante no existe"
-                        )
-                );
+             .findByNombreUsuario("adminb")
+             .orElseThrow(() ->
+                  new IllegalStateException(
+                       "El usuario solicitante no existe: adminb"
+                  )
+             );
 
         return solicitudService.crear(
                 request.getCodigoSce(),

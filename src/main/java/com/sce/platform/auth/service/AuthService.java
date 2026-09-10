@@ -1,9 +1,7 @@
 package com.sce.platform.auth.service;
 
-import com.sce.platform.auth.dto.LoginRequest;
-import com.sce.platform.auth.dto.LoginResponse;
-import com.sce.platform.auth.dto.ResultadoAutenticacion;
-import com.sce.platform.auth.dto.TenantDisponibleResponse;
+import com.sce.platform.auth.dto.*;
+import com.sce.platform.empresas.enums.TenantEstado;
 import com.sce.platform.usuarios.entity.Usuario;
 import com.sce.platform.usuarios.enums.UsuarioEstado;
 import com.sce.platform.usuarios.entity.UsuarioTenant;
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -91,11 +90,19 @@ public class AuthService {
 
            response.setTenantSeleccionado(disponible);
 
-        } else if (usuarioTenant == null) {
-            List<UsuarioTenant> relaciones = obtenerRelacionTenant(usuario);
-            response.setTenants(obtenerTenants(relaciones));
-        }
+        }  else {
+        List<UsuarioTenant> relaciones = obtenerRelacionTenant(usuario);
 
+        if (relaciones.size() == 1) {
+            response.setTenantSeleccionado(
+                 obtenerTenant(relaciones.getFirst())
+            );
+        } else {
+            response.setTenants(
+                 obtenerTenants(relaciones)
+            );
+        }
+    }
 
 
 
@@ -140,4 +147,37 @@ public class AuthService {
 
         return dto;
     }
+
+    @Transactional(readOnly = true)
+    public TenantSeleccionadoResponse seleccionarTenant(Usuario usuario, UUID tenantId) {
+
+        UsuarioTenant usuarioTenant = usuarioTenantRepository
+             .findByIdUsuarioIdAndIdTenantId(usuario.getId(), tenantId)
+             .orElseThrow(() ->
+                  new IllegalStateException(
+                       "El usuario no pertenece al tenant seleccionado"
+                  )
+             );
+
+        if (usuarioTenant.getEstado() != UsuarioTenantEstado.ACTIVE) {
+            throw new IllegalStateException(
+                 "La relación del usuario con el tenant no está activa"
+            );
+        }
+
+        if (usuarioTenant.getTenant().getEstado() != TenantEstado.ACTIVE) {
+            throw new IllegalStateException(
+                 "El tenant no está activo"
+            );
+        }
+
+        TenantSeleccionadoResponse response = new TenantSeleccionadoResponse();
+
+        response.setTenantId(usuarioTenant.getTenant().getId());
+        response.setNombre(usuarioTenant.getTenant().getNombre());
+        response.setRole(usuarioTenant.getRole());
+
+        return response;
+    }
+
 }
