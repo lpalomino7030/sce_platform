@@ -1,9 +1,6 @@
 package com.sce.platform.auth.controller;
 
-import com.sce.platform.auth.dto.LoginRequest;
-import com.sce.platform.auth.dto.LoginResponse;
-import com.sce.platform.auth.dto.TenantSeleccionadoRequest;
-import com.sce.platform.auth.dto.TenantSeleccionadoResponse;
+import com.sce.platform.auth.dto.*;
 import com.sce.platform.auth.service.AuthService;
 import com.sce.platform.empresas.dto.TenantRequest;
 import com.sce.platform.empresas.dto.TenantResponse;
@@ -41,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/seleccionar")
-    public TenantSeleccionadoResponse seleccionar(
+    public TokenResponse seleccionar(
          @Valid @RequestBody TenantSeleccionadoRequest request
     ) {
 

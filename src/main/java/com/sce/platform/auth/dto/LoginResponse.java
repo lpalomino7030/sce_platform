@@ -17,4 +17,6 @@ public class LoginResponse {
 
     private TenantDisponibleResponse tenantSeleccionado;
     private List<TenantDisponibleResponse> tenants;
+
+    private String token;
 }

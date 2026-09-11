@@ -2,6 +2,7 @@ package com.sce.platform.auth.service;
 
 import com.sce.platform.auth.dto.*;
 import com.sce.platform.empresas.enums.TenantEstado;
+import com.sce.platform.security.JwtService;
 import com.sce.platform.usuarios.entity.Usuario;
 import com.sce.platform.usuarios.enums.UsuarioEstado;
 import com.sce.platform.usuarios.entity.UsuarioTenant;
@@ -22,11 +23,13 @@ public class AuthService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioTenantRepository usuarioTenantRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthService(UsuarioRepository usuarioRepository, UsuarioTenantRepository usuarioTenantRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(JwtService jwtService, UsuarioRepository usuarioRepository, UsuarioTenantRepository usuarioTenantRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioTenantRepository = usuarioTenantRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public ResultadoAutenticacion autenticar(LoginRequest request) {
@@ -86,17 +89,36 @@ public class AuthService {
         response.setUsuarioId(usuario.getId());
 
         if (usuarioTenant != null) {
+
             TenantDisponibleResponse disponible = obtenerTenant(usuarioTenant);
 
-           response.setTenantSeleccionado(disponible);
+            response.setTenantSeleccionado(disponible);
+
+            String token = jwtService.generateToken(
+                 usuario.getId(),
+                 usuarioTenant.getTenant().getId(),
+                 usuarioTenant.getRole()
+            );
+
+            response.setToken(token);
 
         }  else {
         List<UsuarioTenant> relaciones = obtenerRelacionTenant(usuario);
 
         if (relaciones.size() == 1) {
-            response.setTenantSeleccionado(
-                 obtenerTenant(relaciones.getFirst())
+
+            UsuarioTenant relacion = relaciones.getFirst();
+
+            response.setTenantSeleccionado(obtenerTenant(relacion));
+
+            String token = jwtService.generateToken(
+                 usuario.getId(),
+                 relacion.getTenant().getId(),
+                 relacion.getRole()
             );
+
+            response.setToken(token);
+
         } else {
             response.setTenants(
                  obtenerTenants(relaciones)
@@ -149,7 +171,7 @@ public class AuthService {
     }
 
     @Transactional(readOnly = true)
-    public TenantSeleccionadoResponse seleccionarTenant(Usuario usuario, UUID tenantId) {
+    public TokenResponse seleccionarTenant(Usuario usuario, UUID tenantId) {
 
         UsuarioTenant usuarioTenant = usuarioTenantRepository
              .findByIdUsuarioIdAndIdTenantId(usuario.getId(), tenantId)
@@ -171,11 +193,14 @@ public class AuthService {
             );
         }
 
-        TenantSeleccionadoResponse response = new TenantSeleccionadoResponse();
+        String token = jwtService.generateToken(
+             usuario.getId(),
+             usuarioTenant.getTenant().getId(),
+             usuarioTenant.getRole()
+        );
 
-        response.setTenantId(usuarioTenant.getTenant().getId());
-        response.setNombre(usuarioTenant.getTenant().getNombre());
-        response.setRole(usuarioTenant.getRole());
+        TokenResponse response = new TokenResponse();
+        response.setToken(token);
 
         return response;
     }
