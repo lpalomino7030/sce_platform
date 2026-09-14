@@ -5,6 +5,7 @@ import com.sce.platform.auth.service.AuthService;
 import com.sce.platform.usuarios.entity.Usuario;
 import com.sce.platform.usuarios.repository.UsuarioRepository;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -47,7 +48,7 @@ public class AuthController {
     }
 
     @GetMapping("/prueba")
-    public String prueba() {
-        return "Acceso autorizado";
+    public String prueba(Authentication authentication) {
+        return authentication.toString();
     }
 }
