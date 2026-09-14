@@ -6,6 +6,8 @@ import com.sce.platform.usuarios.entity.Usuario;
 import com.sce.platform.usuarios.repository.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,7 +50,7 @@ public class AuthController {
     }
 
     @GetMapping("/prueba")
-    public String prueba(Authentication authentication) {
-        return authentication.toString();
+    public String prueba(@AuthenticationPrincipal Jwt jwt) {
+        return jwt.getClaims().toString();
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -41,7 +42,9 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/auth/prueba").authenticated()
                         .anyRequest().permitAll()
                 ).oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(jwt -> {})
+                        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(
+                             new SceJwtAuthenticationConverter()
+                        ))
                 );
 
         return http.build();
@@ -54,6 +57,6 @@ public class SecurityConfiguration {
                 properties.secret().getBytes(StandardCharsets.UTF_8)
         );
 
-        return NimbusJwtDecoder.withSecretKey(key).build();
+        return NimbusJwtDecoder.withSecretKey(key).macAlgorithm(MacAlgorithm.HS512).build();
     }
 }
