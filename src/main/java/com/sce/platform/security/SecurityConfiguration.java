@@ -35,10 +35,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/actuator/health",
-                                "/api/usuarios/**", "/api/auth/**","/api/tenants",
-                                "/api/vinculacion/**"
+                                "/api/auth/**"
                         ).permitAll()
-//                        .anyRequest().authenticated()
+                        .requestMatchers("/api/prueba").authenticated()
+                        .anyRequest().permitAll()
+                ).oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(jwt -> {})
                 );
 
         return http.build();

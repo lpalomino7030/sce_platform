@@ -2,14 +2,9 @@ package com.sce.platform.auth.controller;
 
 import com.sce.platform.auth.dto.*;
 import com.sce.platform.auth.service.AuthService;
-import com.sce.platform.empresas.dto.TenantRequest;
-import com.sce.platform.empresas.dto.TenantResponse;
-import com.sce.platform.usuarios.dto.UsuarioRequest;
 import com.sce.platform.usuarios.entity.Usuario;
-import com.sce.platform.usuarios.entity.UsuarioTenant;
 import com.sce.platform.usuarios.repository.UsuarioRepository;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -49,5 +44,10 @@ public class AuthController {
              usuario,
              request.getTenantId()
         );
+    }
+
+    @GetMapping("/prueba")
+    public String prueba() {
+        return "Acceso autorizado";
     }
 }
