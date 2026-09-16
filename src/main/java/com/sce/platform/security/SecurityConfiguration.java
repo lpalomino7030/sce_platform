@@ -39,7 +39,7 @@ public class SecurityConfiguration {
                              "/api/auth/login",
                              "/api/auth/seleccionar"
                         ).permitAll()
-                        .requestMatchers("/api/auth/prueba").authenticated()
+                        .requestMatchers("/api/auth/prueba").hasRole("USER")
                         .anyRequest().permitAll()
                 ).oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(
