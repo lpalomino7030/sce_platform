@@ -2,6 +2,8 @@ package com.sce.platform.auth.controller;
 
 import com.sce.platform.auth.dto.*;
 import com.sce.platform.auth.service.AuthService;
+import com.sce.platform.security.SceAuthentication;
+import com.sce.platform.security.SceSecurityContext;
 import com.sce.platform.usuarios.entity.Usuario;
 import com.sce.platform.usuarios.enums.UsuarioTenantRole;
 import com.sce.platform.usuarios.repository.UsuarioRepository;
@@ -41,10 +43,15 @@ public class AuthController {
          @AuthenticationPrincipal Jwt jwt
     ) {
 
-        UUID usuarioId = UUID.fromString(jwt.getSubject());
+//        UUID usuarioId = UUID.fromString(jwt.getSubject());
+//
+//        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(()->new IllegalStateException("Usuario no encontrado"));
 
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(()->new IllegalStateException("Usuario no encontrado"));
-
+        Usuario usuario = usuarioRepository
+                .findByNombreUsuario("luis")
+                .orElseThrow(() ->
+                        new IllegalStateException("El usuario no existe")
+                );
 
         return authService.seleccionarTenant(
              usuario,
@@ -53,20 +60,10 @@ public class AuthController {
     }
 
     @GetMapping("/prueba")
-    public String prueba(@AuthenticationPrincipal Jwt jwt) {
+    public String prueba(SceAuthentication authentication) {
 
-        UUID usuarioId = UUID.fromString(jwt.getSubject());
-
-        UUID tenantId = UUID.fromString(
-             jwt.getClaimAsString("tenantId")
-        );
-
-        UsuarioTenantRole role = UsuarioTenantRole.valueOf(
-             jwt.getClaimAsString("role")
-        );
-
-        return "usuarioId=" + usuarioId
-             + ", tenantId=" + tenantId
-             + ", role=" + role;
+        return "usuarioId=" + authentication.usuarioId()
+                + ", tenantId=" + authentication.tenantId()
+                + ", role=" + authentication.role();
     }
 }

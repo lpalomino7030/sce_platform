@@ -20,17 +20,18 @@ import java.util.Optional;
 
 @Service
 public class TenantService {
-    public static UsuarioTenantRepository usuarioTenantRepository;
+    private final UsuarioTenantRepository usuarioTenantRepository;
     private final TenantRepository tenantRepository;
     private final UsuarioTenantService usuarioTenantService;
     private final UsuarioService usuarioService;
     private final SlugGenerator slugGenerator;
 
-    public TenantService(UsuarioService usuarioService, TenantRepository tenantRepository, SlugGenerator slugGenerator, UsuarioTenantService usuarioTenantService ) {
+    public TenantService(UsuarioTenantRepository usuarioTenantRepository, UsuarioService usuarioService, TenantRepository tenantRepository, SlugGenerator slugGenerator, UsuarioTenantService usuarioTenantService ) {
         this.tenantRepository = tenantRepository;
         this.slugGenerator = slugGenerator;
         this.usuarioTenantService = usuarioTenantService;
         this.usuarioService = usuarioService;
+        this.usuarioTenantRepository = usuarioTenantRepository;
     }
 
     @Transactional
