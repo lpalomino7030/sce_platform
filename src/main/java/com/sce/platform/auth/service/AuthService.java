@@ -28,7 +28,7 @@ public class AuthService {
     private final SelectionTokenService selectionTokenService;
 
     public AuthService(JwtService jwtService,SelectionTokenService selectionTokenService,
-UsuarioRepository usuarioRepository, UsuarioTenantRepository usuarioTenantRepository, PasswordEncoder passwordEncoder) {
+        UsuarioRepository usuarioRepository, UsuarioTenantRepository usuarioTenantRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioTenantRepository = usuarioTenantRepository;
         this.passwordEncoder = passwordEncoder;
@@ -178,10 +178,27 @@ UsuarioRepository usuarioRepository, UsuarioTenantRepository usuarioTenantReposi
     }
 
     @Transactional(readOnly = true)
-    public TokenResponse seleccionarTenant(Usuario usuario, UUID tenantId) {
+    public TokenResponse seleccionarTenant( TenantSeleccionadoRequest request
+    ) {
+
+        UUID usuarioId =
+             selectionTokenService.validateAndGetUsuarioId(
+                  request.getSelectionToken()
+             );
+
+        Usuario usuario = usuarioRepository
+             .findById(usuarioId)
+             .orElseThrow(() ->
+                  new IllegalStateException(
+                       "El usuario no existe"
+                  )
+             );
 
         UsuarioTenant usuarioTenant = usuarioTenantRepository
-             .findByIdUsuarioIdAndIdTenantId(usuario.getId(), tenantId)
+             .findByIdUsuarioIdAndIdTenantId(
+                  usuario.getId(),
+                  request.getTenantId()
+             )
              .orElseThrow(() ->
                   new IllegalStateException(
                        "El usuario no pertenece al tenant seleccionado"
