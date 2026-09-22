@@ -16,14 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class TenantController {
 
     private final TenantService tenantService;
-    private final UsuarioService usuarioService;
-    private final UsuarioTenantService usuarioTenantService;
 
-    public TenantController(
-            TenantService tenantService, UsuarioService usuarioService, UsuarioTenantService usuarioTenantService) {
+    public TenantController(TenantService tenantService) {
         this.tenantService = tenantService;
-        this.usuarioService = usuarioService;
-        this.usuarioTenantService = usuarioTenantService;
     }
 
     @PostMapping
