@@ -19,4 +19,5 @@ public class LoginResponse {
     private List<TenantDisponibleResponse> tenants;
 
     private String token;
+    private String selectionToken;
 }

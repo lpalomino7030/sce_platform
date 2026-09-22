@@ -3,14 +3,10 @@ package com.sce.platform.auth.controller;
 import com.sce.platform.auth.dto.*;
 import com.sce.platform.auth.service.AuthService;
 import com.sce.platform.security.SceAuthentication;
-import com.sce.platform.security.SceSecurityContext;
+import com.sce.platform.security.SelectionTokenService;
 import com.sce.platform.usuarios.entity.Usuario;
-import com.sce.platform.usuarios.enums.UsuarioTenantRole;
 import com.sce.platform.usuarios.repository.UsuarioRepository;
 import jakarta.validation.Valid;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -21,13 +17,16 @@ public class AuthController {
 
     private final AuthService authService;
     private final UsuarioRepository usuarioRepository;
+    private final SelectionTokenService selectionTokenService;
 
     public AuthController(
          AuthService authService,
-         UsuarioRepository usuarioRepository
+         UsuarioRepository usuarioRepository,
+         SelectionTokenService selectionTokenService
     ) {
         this.authService = authService;
         this.usuarioRepository = usuarioRepository;
+        this.selectionTokenService = selectionTokenService;
     }
 
 
@@ -39,19 +38,18 @@ public class AuthController {
 
     @PostMapping("/seleccionar")
     public TokenResponse seleccionar(
-         @Valid @RequestBody TenantSeleccionadoRequest request,
-         @AuthenticationPrincipal Jwt jwt
+         @Valid @RequestBody TenantSeleccionadoRequest request
     ) {
-
-//        UUID usuarioId = UUID.fromString(jwt.getSubject());
-//
-//        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(()->new IllegalStateException("Usuario no encontrado"));
+        UUID usuarioId =
+             selectionTokenService.validateAndGetUsuarioId(
+                  request.getSelectionToken()
+             );
 
         Usuario usuario = usuarioRepository
-                .findByNombreUsuario("luis")
-                .orElseThrow(() ->
-                        new IllegalStateException("El usuario no existe")
-                );
+             .findById(usuarioId)
+             .orElseThrow(() ->
+                  new IllegalStateException("El usuario no existe")
+             );
 
         return authService.seleccionarTenant(
              usuario,

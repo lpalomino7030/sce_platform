@@ -11,8 +11,6 @@ import com.sce.platform.usuarios.repository.UsuarioTenantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.sce.platform.usuarios.enums.SolicitudUsuarioTenantEstado.PENDING;
-
 @Service
 public class UsuarioTenantService {
 

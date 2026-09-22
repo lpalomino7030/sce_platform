@@ -12,4 +12,6 @@ import java.util.UUID;
 public class TenantSeleccionadoRequest {
 
     private UUID tenantId;
+    private String selectionToken;
+
 }

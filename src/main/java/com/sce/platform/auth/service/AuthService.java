@@ -3,6 +3,7 @@ package com.sce.platform.auth.service;
 import com.sce.platform.auth.dto.*;
 import com.sce.platform.empresas.enums.TenantEstado;
 import com.sce.platform.security.JwtService;
+import com.sce.platform.security.SelectionTokenService;
 import com.sce.platform.usuarios.entity.Usuario;
 import com.sce.platform.usuarios.enums.UsuarioEstado;
 import com.sce.platform.usuarios.entity.UsuarioTenant;
@@ -24,12 +25,15 @@ public class AuthService {
     private final UsuarioTenantRepository usuarioTenantRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final SelectionTokenService selectionTokenService;
 
-    public AuthService(JwtService jwtService, UsuarioRepository usuarioRepository, UsuarioTenantRepository usuarioTenantRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(JwtService jwtService,SelectionTokenService selectionTokenService,
+UsuarioRepository usuarioRepository, UsuarioTenantRepository usuarioTenantRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioTenantRepository = usuarioTenantRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.selectionTokenService = selectionTokenService;
     }
 
     public ResultadoAutenticacion autenticar(LoginRequest request) {
@@ -119,10 +123,13 @@ public class AuthService {
 
             response.setToken(token);
 
-        } else {
-            response.setTenants(
-                 obtenerTenants(relaciones)
-            );
+        }  else {
+            response.setTenants(obtenerTenants(relaciones));
+
+            String selectionToken =
+                 selectionTokenService.generateToken(usuario.getId());
+
+            response.setSelectionToken(selectionToken);
         }
     }
 
