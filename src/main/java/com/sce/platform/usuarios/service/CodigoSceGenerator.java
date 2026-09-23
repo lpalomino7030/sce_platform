@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.security.SecureRandom;
 
 @Component
-public class GeneradorCodigoSce {
+public class CodigoSceGenerator {
 
     private static final String PREFIJO = "SCE-";
     private static final String CARACTERES =

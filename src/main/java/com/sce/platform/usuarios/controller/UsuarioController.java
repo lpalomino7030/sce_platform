@@ -28,17 +28,10 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioResponse crear(@Valid @RequestBody UsuarioRequest request){
-
-        Usuario usuario = new Usuario();
-
-        usuario.setNombres(request.getNombres());
-        usuario.setApellidos(request.getApellidos());
-        usuario.setNombreUsuario(request.getNombreUsuario());
-        usuario.setCorreo(request.getCorreo());
-        usuario.setEstado(UsuarioEstado.ACTIVE);
-
-        Usuario usuarioCreado = usuarioService.crear(usuario, request.getPassword());
+    public UsuarioResponse crear(
+         @Valid @RequestBody UsuarioRequest request
+    ) {
+        Usuario usuarioCreado = usuarioService.crear(request);
 
         UsuarioResponse response = new UsuarioResponse();
 
@@ -53,40 +46,6 @@ public class UsuarioController {
         response.setFechaActualizacion(usuarioCreado.getFechaActualizacion());
 
         return response;
-
     }
 
-
-    /*
-*
-Esta funcion permite al tenant crear un usuario y registrarlo en su lista de usuarios/empleados.
-* Requiere:
-* UsuarioRequest, Tenant, UsuarioRol
-* al crearse un nuevo usuario este tenga una contraseña por default y un estado ACTIVE
-*
- */
-    @PostMapping("/nuevo_usuario")
-    public UsuarioTenant crearUsuarioNuevo(@Valid @RequestBody UsuarioRequest request, Tenant tenant, UsuarioTenantRole role){
-
-        System.out.println("========== ENTRE A NUEVO USUARIO ==========");
-
-        Usuario usuario = new Usuario();
-
-        usuario.setNombres(request.getNombres());
-        usuario.setApellidos(request.getApellidos());
-        usuario.setNombreUsuario(request.getNombreUsuario());
-        usuario.setCorreo(request.getCorreo());
-        usuario.setEstado(UsuarioEstado.ACTIVE);
-
-        System.out.println("CREANDO: " + request.getNombreUsuario() + " / " + request.getCorreo());
-
-        Usuario usuarioCreado = usuarioService.crear(
-                usuario,
-                "SCE2026" + request.getNombreUsuario()
-        );
-
-        UsuarioTenant usuarioAgregado = usuarioTenantService.asociar(tenant, usuarioCreado, role);
-
-        return usuarioAgregado;
-    }
 }

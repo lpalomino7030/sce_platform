@@ -2,6 +2,8 @@ package com.sce.platform.usuarios.service;
 
 import com.sce.platform.empresas.entity.Tenant;
 import com.sce.platform.empresas.enums.TenantEstado;
+import com.sce.platform.security.SceAuthentication;
+import com.sce.platform.usuarios.dto.CrearUsuarioTenantRequest;
 import com.sce.platform.usuarios.entity.*;
 import com.sce.platform.usuarios.enums.UsuarioEstado;
 import com.sce.platform.usuarios.enums.UsuarioTenantEstado;
@@ -16,12 +18,12 @@ public class UsuarioTenantService {
 
     private final UsuarioTenantRepository usuarioTenantRepository;
     private final UsuarioRepository usuarioRepository;
-    private final GenerateIdentificador generateIdentificador;
+    private final IdentifierGenerator identifierGenerator;
     private static final int MAX_TENANTS_POR_USUARIO = 2;
 
-    public UsuarioTenantService(UsuarioRepository usuarioRepository,  UsuarioTenantRepository usuarioTenantRepository, GenerateIdentificador generateIdentificador) {
+    public UsuarioTenantService(UsuarioRepository usuarioRepository,  UsuarioTenantRepository usuarioTenantRepository, IdentifierGenerator identifierGenerator) {
         this.usuarioTenantRepository = usuarioTenantRepository;
-        this.generateIdentificador = generateIdentificador;
+        this.identifierGenerator = identifierGenerator;
         this.usuarioRepository = usuarioRepository;
     }
 
@@ -72,7 +74,7 @@ public class UsuarioTenantService {
         );
 
 
-        String identificador = generateIdentificador.generar(usuario.getNombreUsuario(),tenant.getSlug());
+        String identificador = identifierGenerator.generar(usuario.getNombreUsuario(),tenant.getSlug());
 
         boolean identificadorExiste = usuarioTenantRepository.existsByIdentificadorSce(identificador);
 
@@ -94,8 +96,14 @@ public class UsuarioTenantService {
         return usuarioTenantRepository.save(usuarioTenant);
     }
 
+    @Transactional
+    public UsuarioTenant crearUsuarioTenant(
+         CrearUsuarioTenantRequest request,
+         SceAuthentication authentication
+    ) {
 
 
+    }
 
 
 }
