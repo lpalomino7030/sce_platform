@@ -1,6 +1,6 @@
 package com.sce.platform.usuarios.enums;
 
-public enum SolicitudUsuarioTenantEstado {
+public enum SolicitudIntegracionEstado {
     // Esperando decisión
     PENDING,
     //Aprobada; puede crearse la relación

@@ -16,7 +16,7 @@ fechaResolucion
  */
 
 import com.sce.platform.empresas.entity.Tenant;
-import com.sce.platform.usuarios.enums.SolicitudUsuarioTenantEstado;
+import com.sce.platform.usuarios.enums.SolicitudIntegracionEstado;
 import com.sce.platform.usuarios.enums.UsuarioTenantRole;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -56,7 +56,7 @@ public class SolicitudUsuarioTenant {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 20)
-    private SolicitudUsuarioTenantEstado estado;
+    private SolicitudIntegracionEstado estado;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "solicitado_por", nullable = false)

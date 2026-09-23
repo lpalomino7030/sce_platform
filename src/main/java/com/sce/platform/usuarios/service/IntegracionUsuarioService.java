@@ -1,14 +1,16 @@
 package com.sce.platform.usuarios.service;
 
 import com.sce.platform.empresas.entity.Tenant;
+import com.sce.platform.security.SceAuthentication;
+import com.sce.platform.usuarios.dto.IntegracionUsuarioRequest;
 import com.sce.platform.usuarios.entity.SolicitudUsuarioTenant;
 import com.sce.platform.usuarios.entity.Usuario;
 import com.sce.platform.usuarios.entity.UsuarioTenant;
-import com.sce.platform.usuarios.enums.SolicitudUsuarioTenantEstado;
+import com.sce.platform.usuarios.enums.SolicitudIntegracionEstado;
 import com.sce.platform.usuarios.enums.UsuarioEstado;
 import com.sce.platform.usuarios.enums.UsuarioTenantEstado;
 import com.sce.platform.usuarios.enums.UsuarioTenantRole;
-import com.sce.platform.usuarios.repository.SolicitudUsuarioTenantRepository;
+import com.sce.platform.usuarios.repository.IntegracionUsuarioRepository;
 import com.sce.platform.usuarios.repository.UsuarioRepository;
 import com.sce.platform.usuarios.repository.UsuarioTenantRepository;
 import jakarta.transaction.Transactional;
@@ -18,17 +20,17 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Service
-public class SolicitudUsuarioTenantService {
+public class IntegracionUsuarioService {
 
     private static final int MAX_TENANTS_POR_USUARIO = 2;
 
-    private final SolicitudUsuarioTenantRepository solicitudRepository;
+    private final IntegracionUsuarioRepository solicitudRepository;
     private final UsuarioRepository usuarioRepository;
     private final UsuarioTenantRepository usuarioTenantRepository;
     private final UsuarioTenantService usuarioTenantService;
 
-    public SolicitudUsuarioTenantService(
-            SolicitudUsuarioTenantRepository solicitudRepository,
+    public IntegracionUsuarioService(
+            IntegracionUsuarioRepository solicitudRepository,
             UsuarioRepository usuarioRepository,
             UsuarioTenantRepository usuarioTenantRepository,
             UsuarioTenantService usuarioTenantService
@@ -40,39 +42,56 @@ public class SolicitudUsuarioTenantService {
     }
 
     @Transactional
-    public SolicitudUsuarioTenant crear(
-            String codigoSce,
-            Usuario solicitante,
-            UsuarioTenantRole rolSolicitado
+    public SolicitudUsuarioTenant crearIntegracionUsuario(
+         IntegracionUsuarioRequest request, SceAuthentication authentication
     ) {
 
-        Usuario usuario = usuarioRepository.findByCodigoSce(codigoSce)
-                .orElseThrow(() ->
-                        new IllegalStateException("El usuario no existe")
-                );
+        UUID solicitanteId = authentication.usuarioId();
+        UUID tenantSolicitanteId = authentication.tenantId();
+
+        UsuarioTenant membershipSolicitante =
+             usuarioTenantRepository
+                  .findByIdUsuarioIdAndIdTenantId(
+                       solicitanteId,
+                       tenantSolicitanteId
+                  )
+                  .orElseThrow(() ->
+                       new IllegalStateException(
+                            "El usuario solicitante no pertenece al tenant actual"
+                       )
+                  );
+
+        if (membershipSolicitante.getEstado()
+             != UsuarioTenantEstado.ACTIVE) {
+
+            throw new IllegalStateException(
+                 "La relación del usuario con el tenant no está activa"
+            );
+        }
+
+        Usuario solicitante =
+             membershipSolicitante.getUsuario();
+
+        Tenant tenantSolicitante =
+             membershipSolicitante.getTenant();
+
+        UsuarioTenantRole rolSolicitado =
+             request.getRolSolicitado();
+
+        Usuario usuario =
+             usuarioRepository.findByCodigoSce(
+                  request.getCodigoSce()
+             ).orElseThrow(() ->
+                  new IllegalStateException(
+                       "El usuario no existe"
+                  )
+             );
 
         if (usuario.getEstado() != UsuarioEstado.ACTIVE) {
             throw new IllegalStateException(
                     "El usuario no está activo"
             );
         }
-
-        UsuarioTenant membershipSolicitante =
-                usuarioTenantRepository
-                        .findByUsuario(solicitante)
-                        .stream()
-                        .filter(ut ->
-                                ut.getEstado() == UsuarioTenantEstado.ACTIVE
-                        )
-                        .findFirst()
-                        .orElseThrow(() ->
-                                new IllegalStateException(
-                                        "El usuario solicitante no pertenece a ningún tenant activo"
-                                )
-                        );
-
-        Tenant tenantSolicitante =
-                membershipSolicitante.getTenant();
 
         if (usuarioTenantRepository
                 .existsByIdTenantIdAndIdUsuarioId(
@@ -101,7 +120,7 @@ public class SolicitudUsuarioTenantService {
                         .existsByUsuarioIdAndTenantSolicitanteIdAndEstado(
                                 usuario.getId(),
                                 tenantSolicitante.getId(),
-                                SolicitudUsuarioTenantEstado.PENDING
+                                SolicitudIntegracionEstado.PENDING
                         );
 
         if (solicitudPendiente) {
@@ -129,7 +148,7 @@ public class SolicitudUsuarioTenantService {
         solicitud.setTenantAutorizador(tenantAutorizador);
         solicitud.setRolSolicitado(rolSolicitado);
         solicitud.setEstado(
-                SolicitudUsuarioTenantEstado.PENDING
+                SolicitudIntegracionEstado.PENDING
         );
         solicitud.setSolicitadoPor(solicitante);
         solicitud.setFechaSolicitud(Instant.now());
@@ -141,8 +160,17 @@ public class SolicitudUsuarioTenantService {
     @Transactional
     public SolicitudUsuarioTenant aprobar(
             UUID solicitudId,
-            Usuario usuarioResolutor
+            SceAuthentication authentication
     ) {
+        UUID usuarioResolutorId = authentication.usuarioId();
+
+        Usuario usuarioResolutor = usuarioRepository
+             .findById(usuarioResolutorId)
+             .orElseThrow(() ->
+                  new IllegalStateException(
+                       "El usuario resolutor no existe"
+                  )
+             );
 
         SolicitudUsuarioTenant solicitud =
                 solicitudRepository.findById(solicitudId)
@@ -153,7 +181,7 @@ public class SolicitudUsuarioTenantService {
                         );
 
         if (solicitud.getEstado()
-                != SolicitudUsuarioTenantEstado.PENDING) {
+                != SolicitudIntegracionEstado.PENDING) {
 
             throw new IllegalStateException(
                     "La solicitud no está pendiente"
@@ -163,24 +191,33 @@ public class SolicitudUsuarioTenantService {
         Tenant tenantAutorizador =
                 solicitud.getTenantAutorizador();
 
+        if (!tenantAutorizador.getId()
+             .equals(authentication.tenantId())) {
+
+            throw new IllegalStateException(
+                 "La solicitud no pertenece al tenant actual"
+            );
+        }
+
         UsuarioTenant membershipResolutor =
-                usuarioTenantRepository
-                        .findByUsuario(usuarioResolutor)
-                        .stream()
-                        .filter(ut ->
-                                ut.getTenant().getId()
-                                        .equals(tenantAutorizador.getId())
-                        )
-                        .filter(ut ->
-                                ut.getEstado()
-                                        == UsuarioTenantEstado.ACTIVE
-                        )
-                        .findFirst()
-                        .orElseThrow(() ->
-                                new IllegalStateException(
-                                        "El usuario no pertenece al tenant autorizador"
-                                )
-                        );
+             usuarioTenantRepository
+                  .findByIdUsuarioIdAndIdTenantId(
+                       authentication.usuarioId(),
+                       authentication.tenantId()
+                  )
+                  .orElseThrow(() ->
+                       new IllegalStateException(
+                            "El usuario no pertenece al tenant actual"
+                       )
+                  );
+
+        if (membershipResolutor.getEstado()
+             != UsuarioTenantEstado.ACTIVE) {
+
+            throw new IllegalStateException(
+                 "La relación del usuario con el tenant no está activa"
+            );
+        }
 
         if (membershipResolutor.getRole()
                 != UsuarioTenantRole.OWNER
@@ -225,7 +262,7 @@ public class SolicitudUsuarioTenantService {
         );
 
         solicitud.setEstado(
-                SolicitudUsuarioTenantEstado.APPROVED
+                SolicitudIntegracionEstado.APPROVED
         );
 
         solicitud.setResueltoPor(usuarioResolutor);
