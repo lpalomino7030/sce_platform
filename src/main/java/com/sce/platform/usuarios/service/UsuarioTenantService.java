@@ -2,6 +2,7 @@ package com.sce.platform.usuarios.service;
 
 import com.sce.platform.empresas.entity.Tenant;
 import com.sce.platform.empresas.enums.TenantEstado;
+import com.sce.platform.empresas.repository.TenantRepository;
 import com.sce.platform.security.SceAuthentication;
 import com.sce.platform.usuarios.dto.CrearUsuarioTenantRequest;
 import com.sce.platform.usuarios.entity.*;
@@ -18,13 +19,15 @@ public class UsuarioTenantService {
 
     private final UsuarioTenantRepository usuarioTenantRepository;
     private final UsuarioRepository usuarioRepository;
+    private final TenantRepository tenantRepository;
     private final IdentifierGenerator identifierGenerator;
     private static final int MAX_TENANTS_POR_USUARIO = 2;
 
-    public UsuarioTenantService(UsuarioRepository usuarioRepository,  UsuarioTenantRepository usuarioTenantRepository, IdentifierGenerator identifierGenerator) {
+    public UsuarioTenantService(TenantRepository tenantRepository, UsuarioRepository usuarioRepository,  UsuarioTenantRepository usuarioTenantRepository, IdentifierGenerator identifierGenerator) {
         this.usuarioTenantRepository = usuarioTenantRepository;
         this.identifierGenerator = identifierGenerator;
         this.usuarioRepository = usuarioRepository;
+        this.tenantRepository = tenantRepository;
     }
 
     @Transactional
@@ -102,6 +105,16 @@ public class UsuarioTenantService {
          SceAuthentication authentication
     ) {
 
+    Usuario usuario = new Usuario();
+    usuario.setNombreUsuario(request.getNombreUsuario());
+    usuario.setCorreo(request.getCorreo());
+    usuario.setNombres(request.getNombres());
+    usuario.setApellidos(request.getApellidos());
+
+    Tenant tenant;
+    tenant = tenantRepository.findById(authentication.tenantId()).orElseThrow(()-> new IllegalStateException("No se encontro el tenant"));
+
+    return asociar(tenant, usuario, request.getRole());
 
     }
 

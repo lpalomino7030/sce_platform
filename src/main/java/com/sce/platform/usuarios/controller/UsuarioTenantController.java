@@ -31,7 +31,7 @@ public class UsuarioTenantController {
          @Valid @RequestBody CrearUsuarioTenantRequest request,
          SceAuthentication authentication
     ){
-        // TODO: refactorizando metodo para la creacion de un usuario dentro de un tenant activo y perfil activo
+        // FIXME: refactorizando metodo para la creacion de un usuario dentro de un tenant activo y perfil activo
         return usuarioTenantService.crearUsuarioTenant(request, authentication);
 
     }
