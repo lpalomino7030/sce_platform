@@ -1,11 +1,15 @@
 package com.sce.platform.usuarios.service;
 
+import com.sce.platform.usuarios.dto.CambiarPasswordRequest;
 import com.sce.platform.usuarios.dto.UsuarioRequest;
 import com.sce.platform.usuarios.entity.Usuario;
 import com.sce.platform.usuarios.enums.UsuarioEstado;
 import com.sce.platform.usuarios.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class UsuarioService {
@@ -59,6 +63,47 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    @Transactional
+    public void cambiarPassword(
+         UUID usuarioId,
+         CambiarPasswordRequest request
+    ) {
 
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+             .orElseThrow(() ->
+                  new IllegalStateException(
+                       "El usuario no existe"
+                  )
+             );
+
+        boolean passwordCorrecta =
+             passwordEncoder.matches(
+                  request.getPasswordActual(),
+                  usuario.getPasswordHash()
+             );
+
+        if (!passwordCorrecta) {
+            throw new IllegalStateException(
+                 "La contraseña actual no es correcta"
+            );
+        }
+
+        if (request.getPasswordActual()
+             .equals(request.getPasswordNueva())) {
+
+            throw new IllegalStateException(
+                 "La nueva contraseña debe ser diferente"
+            );
+        }
+
+        String nuevoPasswordHash =
+             passwordEncoder.encode(
+                  request.getPasswordNueva()
+             );
+
+        usuario.setPasswordHash(nuevoPasswordHash);
+
+        usuarioRepository.save(usuario);
+    }
 
 }

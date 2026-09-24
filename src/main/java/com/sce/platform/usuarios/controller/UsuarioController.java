@@ -1,15 +1,12 @@
 package com.sce.platform.usuarios.controller;
 
 
-import com.sce.platform.empresas.entity.Tenant;
+import com.sce.platform.usuarios.dto.CambiarPasswordRequest;
+import com.sce.platform.security.SceAuthentication;
 import com.sce.platform.usuarios.dto.UsuarioRequest;
 import com.sce.platform.usuarios.dto.UsuarioResponse;
 import com.sce.platform.usuarios.entity.Usuario;
-import com.sce.platform.usuarios.entity.UsuarioTenant;
-import com.sce.platform.usuarios.enums.UsuarioEstado;
-import com.sce.platform.usuarios.enums.UsuarioTenantRole;
 import com.sce.platform.usuarios.service.UsuarioService;
-import com.sce.platform.usuarios.service.UsuarioTenantService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +16,10 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
-    private final UsuarioTenantService usuarioTenantService;
 
-    public UsuarioController(UsuarioService usuarioService, UsuarioTenantService usuarioTenantService) {
+    public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
-        this.usuarioTenantService = usuarioTenantService;
+
     }
 
     @PostMapping
@@ -46,6 +42,19 @@ public class UsuarioController {
         response.setFechaActualizacion(usuarioCreado.getFechaActualizacion());
 
         return response;
+    }
+
+    @PutMapping("/me/password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cambiarPassword(
+         @Valid @RequestBody CambiarPasswordRequest request,
+         SceAuthentication authentication
+    ) {
+
+        usuarioService.cambiarPassword(
+             authentication.usuarioId(),
+             request
+        );
     }
 
 }

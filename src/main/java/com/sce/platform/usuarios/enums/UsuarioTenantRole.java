@@ -5,12 +5,12 @@ public enum UsuarioTenantRole {
 
  public boolean puedeCrear(UsuarioTenantRole role) {
 
-  return switch (this) {
+  return switch (role) {
    case OWNER ->
-           role == ADMIN || role == USER;
+           this == ADMIN || this == USER;
 
    case ADMIN ->
-           role == USER;
+           this == USER;
 
    case USER ->
            false;

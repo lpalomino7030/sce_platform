@@ -3,8 +3,6 @@ package com.sce.platform.usuarios.controller;
 import com.sce.platform.security.SceAuthentication;
 import com.sce.platform.usuarios.dto.IntegracionUsuarioRequest;
 import com.sce.platform.usuarios.entity.SolicitudUsuarioTenant;
-import com.sce.platform.usuarios.entity.Usuario;
-import com.sce.platform.usuarios.repository.UsuarioRepository;
 import com.sce.platform.usuarios.service.IntegracionUsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -18,14 +16,11 @@ public class IntegracionUsuarioController {
 
 
     private final IntegracionUsuarioService solicitudService;
-    private final UsuarioRepository usuarioRepository;
 
     public IntegracionUsuarioController(
-            IntegracionUsuarioService solicitudService,
-            UsuarioRepository usuarioRepository
+            IntegracionUsuarioService solicitudService
     ) {
         this.solicitudService = solicitudService;
-        this.usuarioRepository = usuarioRepository;
     }
 
     @PostMapping
