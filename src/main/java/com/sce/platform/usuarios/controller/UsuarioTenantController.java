@@ -2,7 +2,6 @@ package com.sce.platform.usuarios.controller;
 
 import com.sce.platform.security.SceAuthentication;
 import com.sce.platform.usuarios.dto.CrearUsuarioTenantRequest;
-import com.sce.platform.usuarios.entity.UsuarioTenant;
 import com.sce.platform.usuarios.service.UsuarioTenantService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
