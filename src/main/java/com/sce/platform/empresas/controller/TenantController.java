@@ -21,18 +21,18 @@ public class TenantController {
         this.tenantService = tenantService;
     }
 
-    @PostMapping
-    public TenantResponse create(@RequestBody TenantRequest request) {
-
-        Tenant result = tenantService.crear(request);
-
-        TenantResponse response = new TenantResponse();
-        response.setNombre(result.getNombre());
-        response.setRazonSocial(result.getRazonSocial());
-        response.setRuc(result.getRuc());
-        response.setSlug(result.getSlug());
-
-        return response;
-    }
+//    @PostMapping
+//    public TenantResponse create(@RequestBody TenantRequest request) {
+//
+//        Tenant result = tenantService.crear(request);
+//
+//        TenantResponse response = new TenantResponse();
+//        response.setNombre(result.getNombre());
+//        response.setRazonSocial(result.getRazonSocial());
+//        response.setRuc(result.getRuc());
+//        response.setSlug(result.getSlug());
+//
+//        return response;
+//    }
 
 }
