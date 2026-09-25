@@ -1,0 +1,17 @@
+<div>
+  <h1>Seleccionar empresa</h1>
+
+  <p>Selecciona el tenant con el que deseas trabajar.</p>
+
+  <div>
+    @for (tenant of tenants; track tenant.id) {
+    <button
+      type="button"
+      (click)="seleccionarTenant(tenant)"
+    >
+      <strong>{{ tenant.nombre }}</strong>
+      <span>{{ tenant.role }}</span>
+    </button>
+    }
+  </div>
+</div>

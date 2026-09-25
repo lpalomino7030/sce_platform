@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Auth } from '../auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +11,7 @@ import { Auth } from '../auth';
 })
 export class Login {
   private readonly authService = inject(Auth);
+  private readonly router = inject(Router);
 
   loginForm = new FormGroup({
     username: new FormControl('', {
@@ -28,35 +30,30 @@ export class Login {
   });
 
   iniciarSesion(): void {
-
-    if (this.loginForm.invalid) {
+    if (this.loginForm.invalid)
+    {
       return;
     }
-
     this.authService.login(this.loginForm.getRawValue())
-      .subscribe(response => {
-
+      .subscribe(
+      response => {
         console.log('Respuesta del servidor:', response);
-
-        if (response.token) {
-          this.authService.guardarToken(response.token);
-
-          console.log('JWT guardado correctamente');
-
-          // Por ahora iremos al dashboard.
-        }
-
-        if (response.selectionToken) {
+    // Caso 1: el usuario ya tiene un tenant seleccionado
+    if (response.token) { this.authService.guardarToken(response.token);
+      console.log('JWT guardado correctamente');
+    this.router.navigate(['/dashboard']);
+     return;
+    }
+    // Caso 2: el usuario debe seleccionar un tenant
+        if (response.selectionToken && response.tenants) {
           this.authService.guardarSelectionToken(
-            response.selectionToken
-          );
-
-          console.log('Selection token guardado correctamente');
-
-          // Por ahora iremos a selección de tenant.
-        }
-      });
-  }
+            response.selectionToken );
+          this.authService.guardarTenantsDisponibles(
+            response.tenants );
+          console.log('Selección de tenant requerida');
+          this.router.navigate(['/seleccionar-tenant']);
+          return; }
+      }); }
 
   probarAutenticacion(): void {
 

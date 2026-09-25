@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 
 import { LoginRequest } from './models/login-request';
 import { LoginResponse } from './models/login-response';
+import {TenantSeleccionadoRequest} from './seleccionar/TenantSeleccionadoRequest';
+import {TenantDisponibleResponse} from './models/tenant-disponible-response';
 
 @Injectable({
   providedIn: 'root',
@@ -35,9 +37,35 @@ export class Auth {
     return localStorage.getItem('sce_selection_token');
   }
 
+  guardarTenantsDisponibles(tenants: TenantDisponibleResponse[]): void {
+    sessionStorage.setItem(
+      'sce_available_tenants',
+      JSON.stringify(tenants)
+    );
+  }
+  obtenerTenantsDisponibles(): TenantDisponibleResponse[] {
+    const data = sessionStorage.getItem('sce_available_tenants');
+
+    if (!data) {
+      return [];
+    }
+
+    return JSON.parse(data);
+  }
+  limpiarSeleccionTenant(): void {
+    sessionStorage.removeItem('sce_selection_token');
+    sessionStorage.removeItem('sce_available_tenants');
+  }
   cerrarSesion(): void {
     localStorage.removeItem('sce_token');
     localStorage.removeItem('sce_selection_token');
+  }
+
+  seleccionarTenant(request: TenantSeleccionadoRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(
+      `${this.apiUrl}/seleccionar`,
+      request
+    );
   }
 
   probarAutenticacion(): Observable<string> {
