@@ -34,130 +34,130 @@ public class TenantService {
         this.usuarioTenantRepository = usuarioTenantRepository;
     }
 
-    @Transactional
-    public Tenant crear(TenantRequest request) {
-
-        boolean tenantExiste =
-                tenantRepository.existsByRuc(request.getRuc());
-
-        if (tenantExiste) {
-            throw new RuntimeException("El tenant ya existe");
-        }
-
-        String slug = slugGenerator.generar(request.getNombre());
-
-        if (tenantRepository.existsBySlug(slug)) {
-            throw new RuntimeException("El slug del tenant ya existe");
-        }
-
-        Tenant tenant = new Tenant();
-
-        tenant.setNombre(request.getNombre());
-        tenant.setRazonSocial(request.getRazonSocial());
-        tenant.setRuc(request.getRuc());
-        tenant.setSlug(slug);
-        tenant.setEstado(TenantEstado.ACTIVE);
-
-        Tenant guardadoTenant = tenantRepository.save(tenant);
-        //OWNER
-
-        Usuario usuario = new Usuario();
-
-        usuario.setNombreUsuario(request.getUsuario().getNombreUsuario());
-        usuario.setCorreo(request.getUsuario().getCorreo());
-        usuario.setNombres(request.getUsuario().getNombres());
-        usuario.setApellidos(request.getUsuario().getApellidos());
-        usuario.setEstado(UsuarioEstado.ACTIVE);
-
-        Usuario guardadoUsuario = usuarioService.crear(
-                usuario,
-                request.getUsuario().getPassword()
-        );
-
-        usuarioTenantService.asociar(
-                guardadoTenant,
-                guardadoUsuario,
-                UsuarioTenantRole.OWNER
-        );
-
-        return guardadoTenant;
-    }
-
-    @Transactional
-    public Usuario crearUsuarioParaTenant(
-            Usuario creador,
-            Tenant tenant,
-            UsuarioRequest request,
-            UsuarioTenantRole role
-    ) {
-
-        UsuarioTenant usuarioTenantCreador =
-                usuarioTenantRepository
-                        .findByIdUsuarioIdAndIdTenantId(
-                                creador.getId(),
-                                tenant.getId()
-                        )
-                        .orElseThrow(() ->
-                                new IllegalStateException(
-                                        "El usuario no pertenece al tenant"
-                                )
-                        );
-
-        if (usuarioTenantCreador.getEstado()
-                != UsuarioTenantEstado.ACTIVE) {
-
-            throw new IllegalStateException(
-                    "El usuario no tiene una membresía activa"
-            );
-        }
-
-        UsuarioTenantRole roleCreador =
-                usuarioTenantCreador.getRole();
-
-        if (!roleCreador.puedeCrear(role)) {
-
-            throw new IllegalStateException(
-                    "El usuario no tiene permisos para crear "
-                            + "un usuario con rol " + role
-            );
-        }
-
-        Usuario usuario = new Usuario();
-
-        usuario.setNombreUsuario(
-                request.getNombreUsuario()
-        );
-
-        usuario.setCorreo(
-                request.getCorreo()
-        );
-
-        usuario.setNombres(
-                request.getNombres()
-        );
-
-        usuario.setApellidos(
-                request.getApellidos()
-        );
-
-        usuario.setEstado(
-                UsuarioEstado.ACTIVE
-        );
-
-        Usuario usuarioCreado =
-                usuarioService.crear(
-                        usuario,
-                        request.getPassword()
-                );
-
-        usuarioTenantService.asociar(
-                tenant,
-                usuarioCreado,
-                role
-        );
-
-        return usuarioCreado;
-    }
+//    @Transactional
+//    public Tenant crear(TenantRequest request) {
+//
+//        boolean tenantExiste =
+//                tenantRepository.existsByRuc(request.getRuc());
+//
+//        if (tenantExiste) {
+//            throw new RuntimeException("El tenant ya existe");
+//        }
+//
+//        String slug = slugGenerator.generar(request.getNombre());
+//
+//        if (tenantRepository.existsBySlug(slug)) {
+//            throw new RuntimeException("El slug del tenant ya existe");
+//        }
+//
+//        Tenant tenant = new Tenant();
+//
+//        tenant.setNombre(request.getNombre());
+//        tenant.setRazonSocial(request.getRazonSocial());
+//        tenant.setRuc(request.getRuc());
+//        tenant.setSlug(slug);
+//        tenant.setEstado(TenantEstado.ACTIVE);
+//
+//        Tenant guardadoTenant = tenantRepository.save(tenant);
+//        //OWNER
+//
+//        Usuario usuario = new Usuario();
+//
+//        usuario.setNombreUsuario(request.getUsuario().getNombreUsuario());
+//        usuario.setCorreo(request.getUsuario().getCorreo());
+//        usuario.setNombres(request.getUsuario().getNombres());
+//        usuario.setApellidos(request.getUsuario().getApellidos());
+//        usuario.setEstado(UsuarioEstado.ACTIVE);
+//
+//        Usuario guardadoUsuario = usuarioService.crear(
+//                usuario,
+//                request.getUsuario().getPassword()
+//        );
+//
+//        usuarioTenantService.asociar(
+//                guardadoTenant,
+//                guardadoUsuario,
+//                UsuarioTenantRole.OWNER
+//        );
+//
+//        return guardadoTenant;
+//    }
+//
+//    @Transactional
+//    public Usuario crearUsuarioParaTenant(
+//            Usuario creador,
+//            Tenant tenant,
+//            UsuarioRequest request,
+//            UsuarioTenantRole role
+//    ) {
+//
+//        UsuarioTenant usuarioTenantCreador =
+//                usuarioTenantRepository
+//                        .findByIdUsuarioIdAndIdTenantId(
+//                                creador.getId(),
+//                                tenant.getId()
+//                        )
+//                        .orElseThrow(() ->
+//                                new IllegalStateException(
+//                                        "El usuario no pertenece al tenant"
+//                                )
+//                        );
+//
+//        if (usuarioTenantCreador.getEstado()
+//                != UsuarioTenantEstado.ACTIVE) {
+//
+//            throw new IllegalStateException(
+//                    "El usuario no tiene una membresía activa"
+//            );
+//        }
+//
+//        UsuarioTenantRole roleCreador =
+//                usuarioTenantCreador.getRole();
+//
+//        if (!roleCreador.puedeCrear(role)) {
+//
+//            throw new IllegalStateException(
+//                    "El usuario no tiene permisos para crear "
+//                            + "un usuario con rol " + role
+//            );
+//        }
+//
+//        Usuario usuario = new Usuario();
+//
+//        usuario.setNombreUsuario(
+//                request.getNombreUsuario()
+//        );
+//
+//        usuario.setCorreo(
+//                request.getCorreo()
+//        );
+//
+//        usuario.setNombres(
+//                request.getNombres()
+//        );
+//
+//        usuario.setApellidos(
+//                request.getApellidos()
+//        );
+//
+//        usuario.setEstado(
+//                UsuarioEstado.ACTIVE
+//        );
+//
+//        Usuario usuarioCreado =
+//                usuarioService.crear(
+//                        usuario,
+//                        request.getPassword()
+//                );
+//
+//        usuarioTenantService.asociar(
+//                tenant,
+//                usuarioCreado,
+//                role
+//        );
+//
+//        return usuarioCreado;
+//    }
 
 
 }
