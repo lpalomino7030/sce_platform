@@ -5,19 +5,27 @@ import jakarta.persistence.*;
 
 import java.util.UUID;
 
-@Table(name = "usuario_plataforma")
 @Entity
-public class UsuarioPlataforma
-{
+@Table(name = "usuario_plataforma")
+public class UsuarioPlataforma {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id")
-    UUID id;
+    private UUID id;
 
-    @Column(name = "usuario_id", unique = true)
-    UUID usuarioId;
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+         name = "usuario_id",
+         nullable = false,
+         unique = true
+    )
+    private Usuario usuario;
 
-    @Column(name = "role_plataforma", nullable = false)
     @Enumerated(EnumType.STRING)
-    PlataformRole rolePlataforma;
+    @Column(
+         name = "role_plataforma",
+         nullable = false,
+         length = 50
+    )
+    private PlataformRole rolePlataforma;
 }
