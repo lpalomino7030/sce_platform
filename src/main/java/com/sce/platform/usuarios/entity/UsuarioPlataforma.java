@@ -1,31 +1,33 @@
 package com.sce.platform.usuarios.entity;
 
-import com.sce.platform.usuarios.enums.PlataformRole;
+import com.sce.platform.usuarios.enums.PlatformRole;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
-@Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "usuario_plataforma")
-public class UsuarioPlataforma {
-
+@Entity
+public class UsuarioPlataforma
+{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
     private UUID id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(
-         name = "usuario_id",
-         nullable = false,
-         unique = true
-    )
-    private Usuario usuario;
-
-    @Enumerated(EnumType.STRING)
     @Column(
-         name = "role_plataforma",
-         nullable = false,
-         length = 50
+            name = "usuario_id",
+            nullable = false,
+            unique = true
     )
-    private PlataformRole rolePlataforma;
+    private UUID usuarioId;
+
+    @Column(name = "role_plataforma", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PlatformRole rolePlataforma;
 }

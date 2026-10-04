@@ -1,6 +1,6 @@
 package com.sce.platform.usuarios.enums;
 
-public enum PlataformRole {
+public enum PlatformRole {
     ADMIN,
     SUPPORT,
     BILLING

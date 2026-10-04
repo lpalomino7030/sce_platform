@@ -1,5 +1,7 @@
 package com.sce.platform.auth.dto;
 
+import com.sce.platform.security.AuthContext;
+import com.sce.platform.usuarios.enums.PlatformRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,4 +22,7 @@ public class LoginResponse {
 
     private String token;
     private String selectionToken;
+
+    private AuthContext context;
+    private PlatformRole platformRole;
 }

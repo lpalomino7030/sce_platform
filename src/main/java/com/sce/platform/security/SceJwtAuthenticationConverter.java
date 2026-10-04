@@ -1,6 +1,7 @@
 package com.sce.platform.security;
 
 
+import com.sce.platform.usuarios.enums.PlatformRole;
 import com.sce.platform.usuarios.enums.UsuarioTenantRole;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,30 +17,65 @@ public class SceJwtAuthenticationConverter  implements Converter<Jwt, SceAuthent
     @Override
     public SceAuthenticationToken convert(Jwt jwt) {
 
-        UUID usuarioId = UUID.fromString(jwt.getSubject());
+        UUID usuarioId =
+                UUID.fromString(jwt.getSubject());
 
-        UUID tenantId = UUID.fromString(
-             jwt.getClaimAsString("tenantId")
-        );
+        AuthContext context =
+                AuthContext.valueOf(
+                        jwt.getClaimAsString("context")
+                );
 
-        UsuarioTenantRole role = UsuarioTenantRole.valueOf(
-             jwt.getClaimAsString("role")
-        );
+        if (context == AuthContext.PLATFORM) {
 
-        SceAuthentication sceAuthentication =
-             new SceAuthentication(
-                  usuarioId,
-                  tenantId,
-                  role
-             );
+            PlatformRole role =
+                    PlatformRole.valueOf(
+                            jwt.getClaimAsString("platformRole")
+                    );
+
+            SceAuthentication authentication =
+                    SceAuthentication.platform(
+                            usuarioId,
+                            role
+                    );
+
+            var authorities = List.of(
+                    new SimpleGrantedAuthority(
+                            "ROLE_PLATFORM_" + role.name()
+                    )
+            );
+
+            return new SceAuthenticationToken(
+                    authentication,
+                    authorities
+            );
+        }
+
+        UUID tenantId =
+                UUID.fromString(
+                        jwt.getClaimAsString("tenantId")
+                );
+
+        UsuarioTenantRole role =
+                UsuarioTenantRole.valueOf(
+                        jwt.getClaimAsString("tenantRole")
+                );
+
+        SceAuthentication authentication =
+                SceAuthentication.tenant(
+                        usuarioId,
+                        tenantId,
+                        role
+                );
 
         var authorities = List.of(
-             new SimpleGrantedAuthority("ROLE_" + role.name())
+                new SimpleGrantedAuthority(
+                        "ROLE_" + role.name()
+                )
         );
 
         return new SceAuthenticationToken(
-             sceAuthentication,
-             authorities
+                authentication,
+                authorities
         );
     }
 }

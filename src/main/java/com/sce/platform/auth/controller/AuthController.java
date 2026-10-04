@@ -8,7 +8,6 @@ import com.sce.platform.usuarios.repository.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -36,7 +35,9 @@ public class AuthController {
     public String prueba(SceAuthentication authentication) {
 
         return "usuarioId=" + authentication.usuarioId()
+                + ", context=" + authentication.context()
                 + ", tenantId=" + authentication.tenantId()
-                + ", role=" + authentication.role();
+                + ", tenantRole=" + authentication.tenantRole()
+                + ", platformRole=" + authentication.platformRole();
     }
 }

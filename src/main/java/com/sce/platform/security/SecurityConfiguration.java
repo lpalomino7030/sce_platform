@@ -37,11 +37,19 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/actuator/health",
-                             "/api/auth/login",
-                             "/api/auth/seleccionar"
+                                "/api/auth/login",
+                                "/api/auth/seleccionar"
                         ).permitAll()
-                        .requestMatchers("/api/auth/prueba").hasAnyRole("OWNER", "ADMIN", "USER")
-                        .anyRequest().permitAll()
+
+                        .requestMatchers("/api/platform/**")
+                        .hasAnyRole(
+                                "PLATFORM_ADMIN",
+                                "PLATFORM_SUPPORT",
+                                "PLATFORM_BILLING"
+                        )
+
+                        .requestMatchers("/api/**")
+                        .authenticated()
                 ).oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(
                              new SceJwtAuthenticationConverter()

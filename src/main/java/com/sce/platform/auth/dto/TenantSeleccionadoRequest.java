@@ -18,5 +18,4 @@ public class TenantSeleccionadoRequest {
 
     @NotBlank
     private String selectionToken;
-
 }

@@ -1,5 +1,6 @@
 package com.sce.platform.security;
 
+import com.sce.platform.usuarios.enums.PlatformRole;
 import com.sce.platform.usuarios.enums.UsuarioTenantRole;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -9,6 +10,7 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -19,40 +21,71 @@ public class JwtService {
 
     public JwtService(JwtProperties properties) {
 
-        if (properties.secret() == null || properties.secret().isBlank()) {
-            throw new IllegalStateException("JWT_SECRET no está configurado");
+        if (properties.secret() == null ||
+                properties.secret().isBlank()) {
+
+            throw new IllegalStateException(
+                    "JWT_SECRET no está configurado"
+            );
         }
 
         this.properties = properties;
 
         this.secretKey = Keys.hmacShaKeyFor(
-             properties.secret().getBytes(StandardCharsets.UTF_8)
+                properties.secret()
+                        .getBytes(StandardCharsets.UTF_8)
         );
     }
 
-    public String generateToken(
-         UUID usuarioId,
-         UUID tenantId,
-         UsuarioTenantRole role
+    public String generateTenantToken(
+            UUID usuarioId,
+            UUID tenantId,
+            UsuarioTenantRole role
     ) {
 
         Instant ahora = Instant.now();
 
         return Jwts.builder()
-             .subject(usuarioId.toString())
-             .issuer("sce-platform")
-             .issuedAt(java.util.Date.from(ahora))
-             .expiration(
-                  java.util.Date.from(
-                       ahora.plus(
-                            properties.expirationMinutes(),
-                            ChronoUnit.MINUTES
-                       )
-                  )
-             )
-             .claim("tenantId", tenantId.toString())
-             .claim("role", role.name())
-             .signWith(secretKey)
-             .compact();
+                .subject(usuarioId.toString())
+                .issuer("sce-platform")
+                .issuedAt(Date.from(ahora))
+                .expiration(
+                        Date.from(
+                                ahora.plus(
+                                        properties.expirationMinutes(),
+                                        ChronoUnit.MINUTES
+                                )
+                        )
+                )
+                .claim("context", "TENANT")
+                .claim("tenantId", tenantId.toString())
+                .claim("tenantRole", role.name())
+                .signWith(secretKey, Jwts.SIG.HS512)
+                .compact();
+    }
+
+    public String generatePlatformToken(
+            UUID usuarioId,
+            PlatformRole role
+    ) {
+
+        Instant ahora = Instant.now();
+
+        return Jwts.builder()
+                .subject(usuarioId.toString())
+                .issuer("sce-platform")
+                .issuedAt(Date.from(ahora))
+                .expiration(
+                        Date.from(
+                                ahora.plus(
+                                        properties.expirationMinutes(),
+                                        ChronoUnit.MINUTES
+                                )
+                        )
+                )
+                .claim("context", "PLATFORM")
+                .claim("platformRole", role.name())
+                .signWith(secretKey, Jwts.SIG.HS512)
+                .compact();
     }
 }

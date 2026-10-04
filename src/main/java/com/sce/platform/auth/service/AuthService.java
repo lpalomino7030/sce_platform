@@ -2,12 +2,15 @@ package com.sce.platform.auth.service;
 
 import com.sce.platform.auth.dto.*;
 import com.sce.platform.empresas.enums.TenantEstado;
+import com.sce.platform.security.AuthContext;
 import com.sce.platform.security.JwtService;
 import com.sce.platform.security.SelectionTokenService;
 import com.sce.platform.usuarios.entity.Usuario;
+import com.sce.platform.usuarios.entity.UsuarioPlataforma;
 import com.sce.platform.usuarios.enums.UsuarioEstado;
 import com.sce.platform.usuarios.entity.UsuarioTenant;
 import com.sce.platform.usuarios.enums.UsuarioTenantEstado;
+import com.sce.platform.usuarios.repository.UsuarioPlataformaRepository;
 import com.sce.platform.usuarios.repository.UsuarioRepository;
 import com.sce.platform.usuarios.repository.UsuarioTenantRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,18 +25,20 @@ import java.util.UUID;
 public class AuthService {
 
     private final UsuarioRepository usuarioRepository;
+    private final UsuarioPlataformaRepository usuarioPlataformaRepository;
     private final UsuarioTenantRepository usuarioTenantRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final SelectionTokenService selectionTokenService;
 
-    public AuthService(JwtService jwtService,SelectionTokenService selectionTokenService,
-        UsuarioRepository usuarioRepository, UsuarioTenantRepository usuarioTenantRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(UsuarioPlataformaRepository usuarioPlataformaRepository, JwtService jwtService, SelectionTokenService selectionTokenService,
+                       UsuarioRepository usuarioRepository, UsuarioTenantRepository usuarioTenantRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioTenantRepository = usuarioTenantRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.selectionTokenService = selectionTokenService;
+        this.usuarioPlataformaRepository = usuarioPlataformaRepository;
     }
 
     public ResultadoAutenticacion autenticar(LoginRequest request) {
@@ -80,10 +85,10 @@ public class AuthService {
     @Transactional(readOnly = true)
     public LoginResponse login(LoginRequest request) {
 
-
         ResultadoAutenticacion autenticacion = autenticar(request);
 
         Usuario usuario = autenticacion.getUsuario();
+
         UsuarioTenant usuarioTenant = autenticacion.getUsuarioTenant();
 
         LoginResponse response = new LoginResponse();
@@ -92,51 +97,105 @@ public class AuthService {
         response.setNombreUsuario(usuario.getNombreUsuario());
         response.setUsuarioId(usuario.getId());
 
+
+        // =========================================================
+        // 1. CONTEXTO PLATAFORMA
+        // =========================================================
+
+        UsuarioPlataforma plataforma =
+                (UsuarioPlataforma) usuarioPlataformaRepository
+                        .findByUsuarioId(usuario.getId()).orElseThrow(()->{
+                            throw new IllegalStateException("no encontrado plataforma");
+                        });
+
+        if (plataforma != null) {
+
+            String token = jwtService.generatePlatformToken(
+                    usuario.getId(),
+                    plataforma.getRolePlataforma()
+            );
+
+            response.setContext(AuthContext.PLATFORM);
+
+            response.setPlatformRole(
+                    plataforma.getRolePlataforma()
+            );
+
+            response.setToken(token);
+
+            return response;
+        }
+
+
+        // =========================================================
+        // 2. CONTEXTO TENANT
+        // =========================================================
+
         if (usuarioTenant != null) {
 
-            TenantDisponibleResponse disponible = obtenerTenant(usuarioTenant);
+            TenantDisponibleResponse disponible =
+                    obtenerTenant(usuarioTenant);
+
+            response.setContext(AuthContext.TENANT);
 
             response.setTenantSeleccionado(disponible);
 
-            String token = jwtService.generateToken(
-                 usuario.getId(),
-                 usuarioTenant.getTenant().getId(),
-                 usuarioTenant.getRole()
+            String token = jwtService.generateTenantToken(
+                    usuario.getId(),
+                    usuarioTenant.getTenant().getId(),
+                    usuarioTenant.getRole()
             );
 
             response.setToken(token);
 
-        }  else {
-        List<UsuarioTenant> relaciones = obtenerRelacionTenant(usuario);
+        } else {
 
-        if (relaciones.size() == 1) {
+            List<UsuarioTenant> relaciones =
+                    obtenerRelacionTenant(usuario);
 
-            UsuarioTenant relacion = relaciones.getFirst();
+            if (relaciones.size() == 1) {
 
-            response.setTenantSeleccionado(obtenerTenant(relacion));
+                UsuarioTenant relacion =
+                        relaciones.getFirst();
 
-            String token = jwtService.generateToken(
-                 usuario.getId(),
-                 relacion.getTenant().getId(),
-                 relacion.getRole()
-            );
+                response.setContext(AuthContext.TENANT);
 
-            response.setToken(token);
+                response.setTenantSeleccionado(
+                        obtenerTenant(relacion)
+                );
 
-        }  else {
-            response.setTenants(obtenerTenants(relaciones));
+                String token = jwtService.generateTenantToken(
+                        usuario.getId(),
+                        relacion.getTenant().getId(),
+                        relacion.getRole()
+                );
 
-            String selectionToken =
-                 selectionTokenService.generateToken(usuario.getId());
+                response.setToken(token);
 
-            response.setSelectionToken(selectionToken);
+            } else {
+
+                response.setContext(AuthContext.TENANT);
+
+                response.setTenants(
+                        obtenerTenants(relaciones)
+                );
+
+                String selectionToken =
+                        selectionTokenService.generateToken(
+                                usuario.getId()
+                        );
+
+                response.setSelectionToken(selectionToken);
+            }
         }
-    }
-
-
 
         return response;
     }
+
+
+
+
+
 
     public Optional<UsuarioTenant> datosIdentificador(String identificador) {
 
@@ -217,7 +276,7 @@ public class AuthService {
             );
         }
 
-        String token = jwtService.generateToken(
+        String token = jwtService.generateTenantToken(
              usuario.getId(),
              usuarioTenant.getTenant().getId(),
              usuarioTenant.getRole()
