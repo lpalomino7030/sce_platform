@@ -124,7 +124,7 @@ public class UsuarioTenantService {
 
         //evaluar rol solicitado
         // 1. Obtener el rol del usuario que está ejecutando la acción (ejemplo asumiendo que authentication.role() devuelve el enum o un String convertible)
-        UsuarioTenantRole rolAutenticado = authentication.role();
+        UsuarioTenantRole rolAutenticado = authentication.tenantRole();
 
         // 2. Obtener el rol que se desea asignar al nuevo usuario desde el request
         UsuarioTenantRole rolSolicitado = request.getRole();

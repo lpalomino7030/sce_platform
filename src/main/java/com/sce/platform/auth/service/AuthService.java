@@ -57,6 +57,16 @@ public class AuthService {
             usuario = usuarioTenant.getUsuario();
 
         } else{
+
+            if (usuarioTenant.getEstado() != UsuarioTenantEstado.ACTIVE)
+            {
+                new IllegalStateException("el estado del usuario se encuentra restringido");
+            }
+
+            if (usuarioTenant.getTenant().getEstado() != TenantEstado.ACTIVE)
+            {                new IllegalStateException("el estado del tenant esta restringido");
+            }
+
             usuario = usuarioRepository.findByNombreUsuario(request.getUsername()).orElseThrow(() ->
                     new IllegalStateException("Credenciales inválidas")
             );
@@ -103,10 +113,9 @@ public class AuthService {
         // =========================================================
 
         UsuarioPlataforma plataforma =
-                (UsuarioPlataforma) usuarioPlataformaRepository
-                        .findByUsuarioId(usuario.getId()).orElseThrow(()->{
-                            throw new IllegalStateException("no encontrado plataforma");
-                        });
+                usuarioPlataformaRepository
+                        .findByUsuarioId(usuario.getId())
+                        .orElse(null);
 
         if (plataforma != null) {
 
@@ -116,16 +125,13 @@ public class AuthService {
             );
 
             response.setContext(AuthContext.PLATFORM);
-
             response.setPlatformRole(
                     plataforma.getRolePlataforma()
             );
-
             response.setToken(token);
 
             return response;
         }
-
 
         // =========================================================
         // 2. CONTEXTO TENANT
@@ -153,7 +159,13 @@ public class AuthService {
             List<UsuarioTenant> relaciones =
                     obtenerRelacionTenant(usuario);
 
-            if (relaciones.size() == 1) {
+            if (relaciones.isEmpty()) {
+
+                throw new IllegalStateException(
+                        "El usuario no tiene ningún tenant activo"
+                );
+
+            } else if (relaciones.size() == 1) {
 
                 UsuarioTenant relacion =
                         relaciones.getFirst();

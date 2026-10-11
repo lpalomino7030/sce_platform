@@ -20,7 +20,7 @@ export class SeleccionarTenant {
     this.tenants = this.authService.obtenerTenantsDisponibles();
 
     if (this.tenants.length === 0) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/login']);
     }
   }
 
@@ -43,7 +43,13 @@ export class SeleccionarTenant {
         return;
       }
 
-      this.authService.guardarToken(response.token);
+      this.authService.guardarToken(
+        response.token
+      );
+
+      this.authService.guardarContexto(
+        'TENANT'
+      );
 
       this.authService.limpiarSeleccionTenant();
 

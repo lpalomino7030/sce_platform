@@ -8,14 +8,26 @@ export const authGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   const token = authService.obtenerToken();
-  const selectionToken = authService.obtenerSelectionToken();
+  const context = authService.obtenerContexto();
 
-  if (token) {
-    return true;
+  if (!token) {
+
+    const selectionToken =
+      authService.obtenerSelectionToken();
+
+    if (selectionToken) {
+      return router.createUrlTree(['/seleccionar']);
+    }
+
+    return router.createUrlTree(['/login']);
   }
 
-  if (selectionToken) {
-    return router.createUrlTree(['/seleccionar-tenant']);
+  if (context === 'PLATFORM') {
+    return router.createUrlTree(['/platform']);
+  }
+
+  if (context === 'TENANT') {
+    return true;
   }
 
   return router.createUrlTree(['/login']);
