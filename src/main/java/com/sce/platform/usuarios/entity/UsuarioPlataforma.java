@@ -20,12 +20,13 @@ public class UsuarioPlataforma
     @Column(name = "id")
     private UUID id;
 
-    @Column(
-            name = "usuario_id",
-            nullable = false,
-            unique = true
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+         name = "usuario_id",
+         nullable = false,
+         unique = true
     )
-    private UUID usuarioId;
+    private Usuario usuario;
 
     @Column(name = "role_plataforma", nullable = false)
     @Enumerated(EnumType.STRING)

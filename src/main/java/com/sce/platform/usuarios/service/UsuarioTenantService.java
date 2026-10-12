@@ -11,6 +11,7 @@ import com.sce.platform.usuarios.entity.*;
 import com.sce.platform.usuarios.enums.UsuarioEstado;
 import com.sce.platform.usuarios.enums.UsuarioTenantEstado;
 import com.sce.platform.usuarios.enums.UsuarioTenantRole;
+import com.sce.platform.usuarios.repository.UsuarioPlataformaRepository;
 import com.sce.platform.usuarios.repository.UsuarioRepository;
 import com.sce.platform.usuarios.repository.UsuarioTenantRepository;
 import org.springframework.security.access.AccessDeniedException;
@@ -27,10 +28,12 @@ public class UsuarioTenantService {
     private final UsuarioRepository usuarioRepository;
     private final TenantRepository tenantRepository;
     private final IdentifierGenerator identifierGenerator;
+    private final UsuarioPlataformaRepository usuarioPlataformaRepository;
     private static final int MAX_TENANTS_POR_USUARIO = 2;
     private final CodigoSceGenerator codigoSceGenerator;
 
     public UsuarioTenantService(
+         UsuarioPlataformaRepository usuarioPlataformaRepository,
          PasswordEncoder passwordEncoder,
          PasswordGenerator passwordGenerator,
          CodigoSceGenerator codigoSceGenerator,
@@ -46,6 +49,7 @@ public class UsuarioTenantService {
         this.codigoSceGenerator = codigoSceGenerator;
         this.usuarioRepository = usuarioRepository;
         this.tenantRepository = tenantRepository;
+        this.usuarioPlataformaRepository = usuarioPlataformaRepository;
     }
     @Transactional
     public UsuarioTenant asociar(
@@ -58,6 +62,11 @@ public class UsuarioTenantService {
         if (tenant.getEstado() != TenantEstado.ACTIVE) {
             throw new IllegalStateException(
                     "El tenant no está activo"
+            );
+        }
+        if (usuarioPlataformaRepository.existsByUsuario_Id(usuario.getId())) {
+            throw new IllegalStateException(
+                 "Un usuario de plataforma no puede asociarse a un tenant"
             );
         }
 

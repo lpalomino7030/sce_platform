@@ -24,4 +24,6 @@ public interface UsuarioTenantRepository extends JpaRepository<UsuarioTenant, Us
             UUID usuarioId,
             UUID tenantId
     );
+
+    boolean existsByUsuario_Id(UUID usuarioId);
 }

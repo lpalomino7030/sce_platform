@@ -41,47 +41,57 @@ public class AuthService {
         this.usuarioPlataformaRepository = usuarioPlataformaRepository;
     }
 
+
     public ResultadoAutenticacion autenticar(LoginRequest request) {
 
+        String identificador = request.getUsername().trim();
 
-        Usuario usuario = null;
+        Usuario usuario;
         UsuarioTenant usuarioTenant = null;
-        if (request.getUsername().contains("@")) {
-            usuarioTenant = datosIdentificador(request.getUsername())
-                    .orElseThrow(() ->
-                            new IllegalStateException(
-                                    "El identificador no existe en el sistema"
-                            )
-                    );
+
+        // Camino 1: identificador SCE de una empresa.
+        if (identificador.contains("@")) {
+
+            usuarioTenant = usuarioTenantRepository
+                 .findByIdentificadorSce(identificador)
+                 .orElseThrow(() ->
+                      new IllegalStateException(
+                           "Credenciales inválidas"
+                      )
+                 );
 
             usuario = usuarioTenant.getUsuario();
 
-        } else{
-
-            if (usuarioTenant.getEstado() != UsuarioTenantEstado.ACTIVE)
-            {
-                new IllegalStateException("el estado del usuario se encuentra restringido");
+            if (usuarioTenant.getEstado() != UsuarioTenantEstado.ACTIVE) {
+                throw new IllegalStateException("Credenciales inválidas");
             }
 
-            if (usuarioTenant.getTenant().getEstado() != TenantEstado.ACTIVE)
-            {                new IllegalStateException("el estado del tenant esta restringido");
+            if (usuarioTenant.getTenant().getEstado() != TenantEstado.ACTIVE) {
+                throw new IllegalStateException("Credenciales inválidas");
             }
 
-            usuario = usuarioRepository.findByNombreUsuario(request.getUsername()).orElseThrow(() ->
-                    new IllegalStateException("Credenciales inválidas")
-            );
+        } else {
+
+            // Camino 2: nombre de usuario global.
+            usuario = usuarioRepository
+                 .findByNombreUsuario(identificador)
+                 .orElseThrow(() ->
+                      new IllegalStateException(
+                           "Credenciales inválidas"
+                      )
+                 );
         }
 
-        String passwordHash = usuario.getPasswordHash();
-
+        // Validaciones comunes a ambos caminos.
         if (usuario.getEstado() != UsuarioEstado.ACTIVE) {
-            throw new IllegalStateException(
-                    "El usuario no está activo"
-            );
+            throw new IllegalStateException("Credenciales inválidas");
         }
 
-        if (!passwordEncoder.matches(request.getPassword(), passwordHash))
-        {throw new IllegalStateException("Credenciales inválidas");
+        if (!passwordEncoder.matches(
+             request.getPassword(),
+             usuario.getPasswordHash()
+        )) {
+            throw new IllegalStateException("Credenciales inválidas");
         }
 
         ResultadoAutenticacion resultado = new ResultadoAutenticacion();
@@ -89,7 +99,6 @@ public class AuthService {
         resultado.setUsuarioTenant(usuarioTenant);
 
         return resultado;
-
     }
 
     @Transactional(readOnly = true)
@@ -114,7 +123,7 @@ public class AuthService {
 
         UsuarioPlataforma plataforma =
                 usuarioPlataformaRepository
-                        .findByUsuarioId(usuario.getId())
+                        .findByUsuario_Id(usuario.getId())
                         .orElse(null);
 
         if (plataforma != null) {

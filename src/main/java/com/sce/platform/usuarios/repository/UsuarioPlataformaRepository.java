@@ -10,6 +10,7 @@ import java.util.UUID;
 @Repository
 public interface UsuarioPlataformaRepository extends JpaRepository<UsuarioPlataforma, UUID> {
 
-    Optional<UsuarioPlataforma> findByUsuarioId(UUID usuarioId);
+    Optional<UsuarioPlataforma> findByUsuario_Id(UUID usuarioId);
 
+    boolean existsByUsuario_Id(UUID usuarioId);
 }
