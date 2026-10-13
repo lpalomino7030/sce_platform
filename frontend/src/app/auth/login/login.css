@@ -1,0 +1,36 @@
+.login-page{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.login-info{
+  display: flex;
+  width: 50%;
+}
+.login-form-view{
+  width: 50%;
+}
+.form-group,.login-Form{
+  display: flex;
+  flex-direction: column;
+}
+.login-Form{
+  gap: 1rem;
+}
+.btn-login{
+  background: #e35818;
+  color: #fff;
+  border: none;
+  width: fit-content;
+  padding: .5rem 1rem;
+}
+.form-control{
+  border: 1px solid #eae7e7;
+  height: 1.5rem;
+}
+.form-label{
+
+}
+.form-tittle{
+margin: 0;
+}

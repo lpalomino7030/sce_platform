@@ -1,36 +1,44 @@
-<h1>Iniciar sesión</h1>
+<div class="login-page">
+  <section class="login-info">
+lorem
+  </section>
+  <section class="login-form-view">
+    <h1 class="form-tittle">Iniciar Sesion</h1>
+    <small>ingresa a tu cuenta para continuar</small>
 
-<form [formGroup]="loginForm" (ngSubmit)="iniciarSesion()">
+    <form class="login-Form" [formGroup]="loginForm" (ngSubmit)="iniciarSesion()">
 
-  <div>
-    <label for="username">Usuario</label>
+      <div class="form-group">
+        <label class="form-label" for="username">Usuario</label>
 
-    <input
-      id="username"
-      type="text"
-      formControlName="username"
-    >
-  </div>
+        <input
+          class="form-control"
+          id="username"
+          type="text"
+          formControlName="username"
+        >
+      </div>
 
-  <div>
-    <label for="password">Contraseña</label>
+      <div  class="form-group">
+        <label class="form-label" for="password">Contraseña</label>
 
-    <input
-      id="password"
-      type="password"
-      formControlName="password"
-    >
-  </div>
+        <input
+          class="form-control"
+          id="password"
+          type="password"
+          formControlName="password"
+        >
+      </div>
 
-  <button
-    type="submit"
-    [disabled]="loginForm.invalid"
-  >
-    Ingresar
-  </button>
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid"
+        class="btn btn-login"
+      >
+        Iniciar sesión
+      </button>
 
-  <button type="button" (click)="probarAutenticacion()">
-    Probar autenticación
-  </button>
+    </form>
 
-</form>
+  </section>
+</div>
