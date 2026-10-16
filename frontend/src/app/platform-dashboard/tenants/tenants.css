@@ -1,0 +1,40 @@
+.tenant-page{
+  width: 100%;
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  background: white;
+  overflow-y: auto;
+}
+.modal {
+  width: min(90%, 480px);
+  padding: 24px;
+  border-radius: 8px;
+  background: white;
+  color: #222;
+  border: 1px solid #ccc;
+
+  /*box-shadow: 0 10px 40px rgb(0 0 0 / 20%);*/
+}
+.btn-cerrar-modalTenants{
+  height: 30px;
+  width: 30px;
+  padding: 2px;
+  border-radius: 50%;
+  background: #efecec;
+  border: 1px solid #e6e6e6;
+  }
+.btn-cerrar-modalTenants:hover{
+  background: #403d3d;
+  border: 1px solid #e6e6e6;
+  color: white;
+}
+.tenant-title{
+  display: flex;
+  height: 10%;
+  justify-content: space-between;
+  align-items: center;
+}

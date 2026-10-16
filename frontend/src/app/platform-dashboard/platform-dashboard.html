@@ -1,1 +1,8 @@
-<p>platform-dashboard works!</p>
+<div>
+  <p>platform-dashboard works!</p>
+  <button (click)="abrirModalTenant()">Crear Tenant</button>
+</div>
+
+@if (modalTenant) {
+<app-tenants (cerrar)="cerrarModalTenant()"></app-tenants>
+}

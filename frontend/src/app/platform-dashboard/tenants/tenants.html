@@ -1,0 +1,30 @@
+<section class="tenant-page overlay"
+>
+
+  <div class="modal"
+       (click)="$event.stopPropagation()">
+
+    <div class="tenant-title">
+      <p>Agregar Nuevo Tenant</p>
+
+      <button
+        type="button"
+        class="btn-cerrar-modalTenants"
+        (click)="cerrarModal()"
+        aria-label="Cerrar modal">
+        ×
+      </button>
+    </div>
+
+    <form>
+
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text"/>
+
+      <button type="submit">Aceptar</button>
+      <!--      <button (click)="cerrarModalTenant()"></button>-->
+    </form>
+  </div>
+
+
+</section>
