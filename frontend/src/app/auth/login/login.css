@@ -10,10 +10,7 @@
 .login-form-view{
   width: 50%;
 }
-.form-group,.login-Form{
-  display: flex;
-  flex-direction: column;
-}
+
 .login-Form{
   gap: 1rem;
 }
@@ -24,10 +21,7 @@
   width: fit-content;
   padding: .5rem 1rem;
 }
-.form-control{
-  border: 1px solid #eae7e7;
-  height: 1.5rem;
-}
+
 .form-label{
 
 }

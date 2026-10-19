@@ -2,3 +2,17 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+
+.form-control{
+  border: 1px solid #eae7e7;
+  height: 1.5rem;
+}
+.form-group,.login-Form{
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}

@@ -7,7 +7,6 @@ import com.sce.platform.empresas.repository.TenantRepository;
 import com.sce.platform.usuarios.dto.UsuarioRequest;
 import com.sce.platform.usuarios.entity.Usuario;
 import com.sce.platform.usuarios.entity.UsuarioTenant;
-import com.sce.platform.usuarios.enums.UsuarioEstado;
 import com.sce.platform.usuarios.enums.UsuarioTenantEstado;
 import com.sce.platform.usuarios.enums.UsuarioTenantRole;
 import com.sce.platform.usuarios.repository.UsuarioTenantRepository;
@@ -15,8 +14,9 @@ import com.sce.platform.usuarios.service.UsuarioService;
 import com.sce.platform.usuarios.service.UsuarioTenantService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import com.sce.platform.empresas.dto.CrearTenantResponse;
+import com.sce.platform.security.PasswordGenerator;
+import com.sce.platform.usuarios.entity.UsuarioTenant;
 
 @Service
 public class TenantService {
@@ -25,15 +25,23 @@ public class TenantService {
     private final UsuarioTenantService usuarioTenantService;
     private final UsuarioService usuarioService;
     private final SlugGenerator slugGenerator;
+    private final PasswordGenerator passwordGenerator;
 
-    public TenantService(UsuarioTenantRepository usuarioTenantRepository, UsuarioService usuarioService, TenantRepository tenantRepository, SlugGenerator slugGenerator, UsuarioTenantService usuarioTenantService ) {
+    public TenantService(
+         UsuarioTenantRepository usuarioTenantRepository,
+         UsuarioService usuarioService,
+         TenantRepository tenantRepository,
+         SlugGenerator slugGenerator,
+         UsuarioTenantService usuarioTenantService,
+         PasswordGenerator passwordGenerator
+    ) {
         this.tenantRepository = tenantRepository;
         this.slugGenerator = slugGenerator;
         this.usuarioTenantService = usuarioTenantService;
         this.usuarioService = usuarioService;
         this.usuarioTenantRepository = usuarioTenantRepository;
+        this.passwordGenerator = passwordGenerator;
     }
-
     @Transactional
     public Tenant crear(TenantRequest request) {
 
