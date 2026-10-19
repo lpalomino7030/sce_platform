@@ -1,6 +1,7 @@
 package com.sce.platform.empresas.service;
 
 import com.sce.platform.empresas.dto.TenantRequest;
+import com.sce.platform.empresas.dto.TenantResponse;
 import com.sce.platform.empresas.entity.Tenant;
 import com.sce.platform.empresas.enums.TenantEstado;
 import com.sce.platform.empresas.repository.TenantRepository;
@@ -42,52 +43,88 @@ public class TenantService {
         this.usuarioTenantRepository = usuarioTenantRepository;
         this.passwordGenerator = passwordGenerator;
     }
+
     @Transactional
-    public Tenant crear(TenantRequest request) {
+    public CrearTenantResponse crear(TenantRequest request) {
 
-        boolean tenantExiste =
-                tenantRepository.existsByRuc(request.getRuc());
+        if (request.getUsuario() == null) {
+            throw new IllegalArgumentException(
+                 "Los datos del propietario son obligatorios"
+            );
+        }
 
-        if (tenantExiste) {
-            throw new RuntimeException("El tenant ya existe");
+        if (tenantRepository.existsByRuc(request.getRuc())) {
+            throw new IllegalStateException("El tenant ya existe");
         }
 
         String slug = slugGenerator.generar(request.getNombre());
 
         if (tenantRepository.existsBySlug(slug)) {
-            throw new RuntimeException("El slug del tenant ya existe");
+            throw new IllegalStateException("El slug del tenant ya existe");
         }
 
+        // 1. Crear el tenant.
         Tenant tenant = new Tenant();
-
         tenant.setNombre(request.getNombre());
         tenant.setRazonSocial(request.getRazonSocial());
         tenant.setRuc(request.getRuc());
         tenant.setSlug(slug);
         tenant.setEstado(TenantEstado.ACTIVE);
 
-        Tenant guardadoTenant = tenantRepository.save(tenant);
-        //OWNER
+        Tenant tenantGuardado = tenantRepository.save(tenant);
 
-        UsuarioRequest usuario = new UsuarioRequest();
+        // 2. Generar la contraseña temporal en el backend.
+        String passwordTemporal = passwordGenerator.generar();
 
-        usuario.setNombreUsuario(request.getUsuario().getNombreUsuario());
-        usuario.setCorreo(request.getUsuario().getCorreo());
-        usuario.setNombres(request.getUsuario().getNombres());
-        usuario.setApellidos(request.getUsuario().getApellidos());
+        // 3. Preparar los datos del propietario.
+        UsuarioRequest usuarioRequest = request.getUsuario();
+        usuarioRequest.setPassword(passwordTemporal);
 
-        Usuario guardadoUsuario = usuarioService.crear(
-                usuario
-        );
+        // 4. Crear el usuario.
+        // UsuarioService se encarga de generar el hash.
+        Usuario usuarioGuardado =
+             usuarioService.crear(usuarioRequest);
 
-        usuarioTenantService.asociar(
-                guardadoTenant,
-                guardadoUsuario,
-                UsuarioTenantRole.OWNER
-        );
+        // 5. Asociar el propietario con el tenant.
+        UsuarioTenant asociacion =
+             usuarioTenantService.asociar(
+                  tenantGuardado,
+                  usuarioGuardado,
+                  UsuarioTenantRole.OWNER
+             );
 
-        return guardadoTenant;
+        // 6. Construir la respuesta.
+        CrearTenantResponse response = new CrearTenantResponse();
+
+        // Ajustar este mapeo a los campos reales de TenantResponse.
+        TenantResponse tenantResponse = new TenantResponse();
+        tenantResponse.setId(tenantGuardado.getId());
+        tenantResponse.setNombre(tenantGuardado.getNombre());
+        tenantResponse.setRazonSocial(tenantGuardado.getRazonSocial());
+        tenantResponse.setRuc(tenantGuardado.getRuc());
+        tenantResponse.setSlug(tenantGuardado.getSlug());
+        tenantResponse.setEstado(tenantGuardado.getEstado());
+
+        response.setTenant(tenantResponse);
+
+        CrearTenantResponse.UsuarioInicialResponse owner =
+             new CrearTenantResponse.UsuarioInicialResponse();
+
+        owner.setId(usuarioGuardado.getId().toString());
+        owner.setNombreUsuario(usuarioGuardado.getNombreUsuario());
+        owner.setCorreo(usuarioGuardado.getCorreo());
+        owner.setNombres(usuarioGuardado.getNombres());
+        owner.setApellidos(usuarioGuardado.getApellidos());
+        owner.setCodigoSce(usuarioGuardado.getCodigoSce());
+        owner.setIdentificadorSce(asociacion.getIdentificadorSce());
+        owner.setRole(asociacion.getRole().name());
+
+        response.setUsuario(owner);
+        response.setPasswordTemporal(passwordTemporal);
+
+        return response;
     }
+
 
     @Transactional
     public Usuario crearUsuarioParaTenant(
