@@ -41,7 +41,8 @@ public class SecurityConfiguration {
                                 "/api/auth/seleccionar"
                         ).permitAll()
 
-                        .requestMatchers("/api/platform/**")
+                        .requestMatchers("/api/platform/**",  "/api/tenants",
+                             "/api/tenants/**")
                         .hasAnyRole(
                                 "PLATFORM_ADMIN",
                                 "PLATFORM_SUPPORT",

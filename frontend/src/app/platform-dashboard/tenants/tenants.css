@@ -38,3 +38,64 @@
   justify-content: space-between;
   align-items: center;
 }
+.tenantForm{
+  display: flex;
+  flex-direction: column;
+}
+.formDataTenant{
+  display: flex;
+  gap: 1rem;
+}
+.OwnerData{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.crearTenantbtn{
+  background: #ff6a00;
+  color: #fff;
+  border: none;
+  padding: .5rem 1rem;
+  cursor: pointer;
+}
+.crearTenantbtn:hover{
+  background: #403d3d;
+}
+.title{
+  display: flex;
+  flex-direction: column;
+}
+
+.title p{
+color: #222222;
+  margin: 2px 0;
+}
+.title small{
+color: #817f7f;
+  font-size: 10px;
+}
+.subtitletenantform{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  color: #ff6a00;
+  font-size: 12px;
+  height: 2.5rem;
+}
+.subtitletenantform div{
+  border-radius: 50%;
+  height: 1rem;
+  width: 1rem;
+  background: #ff6a00;
+  color: #fff;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+}
+.label-validacion{
+  color: #ff6a00;
+  font-size: 12px;
+}

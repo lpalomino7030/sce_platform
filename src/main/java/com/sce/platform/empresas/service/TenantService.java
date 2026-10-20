@@ -1,5 +1,6 @@
 package com.sce.platform.empresas.service;
 
+import com.sce.platform.empresas.dto.OwnerInicialRequest;
 import com.sce.platform.empresas.dto.TenantRequest;
 import com.sce.platform.empresas.dto.TenantResponse;
 import com.sce.platform.empresas.entity.Tenant;
@@ -72,13 +73,19 @@ public class TenantService {
         tenant.setEstado(TenantEstado.ACTIVE);
 
         Tenant tenantGuardado = tenantRepository.save(tenant);
+        OwnerInicialRequest ownerRequest = request.getUsuario();
 
         // 2. Generar la contraseña temporal en el backend.
         String passwordTemporal = passwordGenerator.generar();
 
         // 3. Preparar los datos del propietario.
-        UsuarioRequest usuarioRequest = request.getUsuario();
+        UsuarioRequest usuarioRequest = new UsuarioRequest();
+        usuarioRequest.setNombreUsuario(ownerRequest.getNombreUsuario());
+        usuarioRequest.setCorreo(ownerRequest.getCorreo());
+        usuarioRequest.setNombres(ownerRequest.getNombres());
+        usuarioRequest.setApellidos(ownerRequest.getApellidos());
         usuarioRequest.setPassword(passwordTemporal);
+
 
         // 4. Crear el usuario.
         // UsuarioService se encarga de generar el hash.

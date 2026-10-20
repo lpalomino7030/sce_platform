@@ -26,5 +26,5 @@ public class TenantRequest {
 
     @NotNull(message = "Los datos del propietario son obligatorios")
     @Valid
-    private UsuarioRequest usuario;
+    private OwnerInicialRequest usuario;
 }

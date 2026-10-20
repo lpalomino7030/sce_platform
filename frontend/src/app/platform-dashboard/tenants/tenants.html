@@ -5,8 +5,10 @@
        (click)="$event.stopPropagation()">
 
     <div class="tenant-title">
-      <p>Agregar Nuevo Tenant</p>
-
+      <div class="title">
+      <p>Crear Nuevo Tenant</p>
+      <small>Completa la informacion de la impresa y nombre de propietario para registrar un nuevo tenant en la plataforma.</small>
+      </div>
       <button
         type="button"
         class="btn-cerrar-modalTenants"
@@ -16,34 +18,85 @@
       </button>
     </div>
 
-    <form >
-      <div>
-        <label> Datos del tenant</label>
-        <div class="form-group">
-          <label class="" for="ruc">Ruc</label>
-          <input class="form-control" id="ruc" type="text"/>
-        </div>
-        <div class="form-group">
+    <form class="tenantForm" [formGroup]="formulario" (ngSubmit)="guardarTenant()">
+      <div class="formDataTenant">
+        <div>
+          <div class="subtitletenantform">
+            <div>1</div>
+            <small> Datos de la empresa</small>
 
-          <label class="" for="nombre">Nombre</label>
-          <input class="form-control" id="nombre" type="text"/>
-        </div>
-        <div class="form-group">
+          </div>
+          <div class="form-group">
+            <label class="" for="ruc">Ruc  <span class="label-validacion">*</span></label>
+            <input class="form-control" id="ruc" type="text" formControlName="ruc"
+                   placeholder="RUC"
+                   maxlength="11"
+                   inputmode="numeric"/>
+          </div>
+          <div class="form-group">
 
-          <label class="" for="razonSocial">Razon Social</label>
-          <input class="form-control" id="razonSocial" type="text"/>
+            <label class="" for="nombre">Nombre  <span class="label-validacion">*</span></label>
+            <input class="form-control" id="nombre" type="text" formControlName="nombre"
+                   placeholder="Nombre de la empresa"/>
+          </div>
+          <div class="form-group">
+
+            <label class="" for="razonSocial">Razon Social  <span class="label-validacion">*</span></label>
+            <input formControlName="razonSocial" placeholder="Razón social" class="form-control" id="razonSocial"
+                   type="text"/>
+          </div>
+        </div>
+        <div class="OwnerData">
+          <div class="subtitletenantform">
+            <div>2</div>
+            <small> Datos del propietario</small>
+
+          </div>
+          <div class="form-group ">
+            <label class="" for="nombreUsuario">Nombre de Usuario <span class="label-validacion">*</span></label>
+            <input class="form-control" id="nombreUsuario" formControlName="nombreUsuario"
+                   placeholder="Usuario propietario"/>
+          </div>
+          <div class="form-group">
+            <label class="" for="email">Correo electronico  <span class="label-validacion">*</span></label>
+            <input class="form-control" id="email" formControlName="correo" type="email" placeholder="Correo"/>
+          </div>
+          <div class="form-group">
+            <label class="" for="nombres">Nombre del propietario  <span class="label-validacion">*</span></label>
+            <input class="form-control" id="nombres" formControlName="nombres" placeholder="Nombres del propietario"/>
+          </div>
+          <div class="form-group">
+            <label class="" for="apellidos">Apellidos del propietario  <span class="label-validacion">*</span></label>
+            <input class="form-control" id="apellidos" formControlName="apellidos"
+                   placeholder="Apellidos del propietario"/>
+          </div>
+
         </div>
       </div>
-      <div>
-        <label>Datos de Owner</label>
 
+      <button class="crearTenantbtn" type="submit" [disabled]="cargando">
+        {{ cargando ? 'Creando empresa...' : 'Crear empresa' }}
+      </button>
 
-      </div>
+      @if (errorMensaje) {
+      <p>{{ errorMensaje }}</p>
+      }
 
-
-      <button type="submit">Aceptar</button>
-      <!--      <button (click)="cerrarModalTenant()"></button>-->
     </form>
+
+    @if (respuestaCreacion; as respuesta) {
+    <section>
+      <h3>Empresa creada correctamente</h3>
+
+      <p>Empresa: {{ respuesta.tenant.nombre }}</p>
+      <p>Usuario: {{ respuesta.usuario.nombreUsuario }}</p>
+      <p>Correo: {{ respuesta.usuario.correo }}</p>
+
+      <h4>Contraseña temporal</h4>
+      <p>{{ respuesta.passwordTemporal }}</p>
+    </section>
+    }
+
   </div>
 
 

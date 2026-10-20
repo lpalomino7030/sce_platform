@@ -1,11 +1,15 @@
 package com.sce.platform.empresas.controller;
 
+import com.sce.platform.empresas.dto.CrearTenantResponse;
 import com.sce.platform.empresas.dto.TenantRequest;
 import com.sce.platform.empresas.dto.TenantResponse;
 import com.sce.platform.empresas.entity.Tenant;
 import com.sce.platform.empresas.service.TenantService;
 import com.sce.platform.usuarios.service.UsuarioService;
 import com.sce.platform.usuarios.service.UsuarioTenantService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +25,16 @@ public class TenantController {
         this.tenantService = tenantService;
     }
 
+    @PostMapping
+    public ResponseEntity<CrearTenantResponse> crear(
+         @Valid @RequestBody TenantRequest request) {
 
+        CrearTenantResponse response =
+             tenantService.crear(request);
+
+        return ResponseEntity
+             .status(HttpStatus.CREATED)
+             .body(response);
+    }
 
 }
