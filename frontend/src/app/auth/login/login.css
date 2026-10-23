@@ -136,6 +136,29 @@
   font-size: 12px;
   text-align: center;
 }
+.cuad-orng {
+  background: #f6d6c4;
+  position: fixed;
+  bottom: 5px;
+  right: -100px;
+  width: 150px;
+  height: 150px;
+  transform: rotate(45deg);
+  z-index: 1;
+}
+
+.cuad-blue {
+  background: rgb(168 193 219 / 0.82);
+  position: fixed;
+  bottom: -80px;
+  right: -80px;
+  width: 150px;
+  height: 150px;
+  transform: rotate(45deg);
+  z-index: 2;
+}
+
+
 
 /* Pantallas pequeñas */
 @media (max-width: 900px) {
