@@ -3,29 +3,33 @@
 lorem
   </section>
   <section class="login-form-view">
-    <h1 class="form-tittle">Iniciar Sesion</h1>
-    <small>ingresa a tu cuenta para continuar</small>
+    <div class="head-login">
+      <h1 class="form-tittle">Iniciar Sesion</h1>
+      <small class="login-subtitle">Ingresa a tu cuenta para continuar</small>
+    </div>
 
     <form class="login-Form" [formGroup]="loginForm" (ngSubmit)="iniciarSesion()">
 
-      <div class="form-group">
-        <label class="form-label" for="username">Usuario</label>
+      <div class="form-group bx-username">
+        <label class="form-label lbl-username" for="username">Usuario</label>
 
         <input
-          class="form-control"
+          class="form-control "
           id="username"
           type="text"
+          placeholder="TuUsuario"
           formControlName="username"
         >
       </div>
 
       <div  class="form-group">
-        <label class="form-label" for="password">Contraseña</label>
+        <label class="form-label lbl-password" for="password">Contraseña</label>
 
         <input
           class="form-control"
           id="password"
           type="password"
+          placeholder="ingresa tu contraseña"
           formControlName="password"
         >
       </div>
@@ -39,6 +43,8 @@ lorem
       </button>
 
     </form>
-
+<div>
+  <p class="branding-footer"> SCE Platform 2026</p>
+</div>
   </section>
 </div>

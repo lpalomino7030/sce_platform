@@ -1,10 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 body {
   font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 .form-control{
-  border: 1px solid #eae7e7;
+  border: 1px solid #e8ecf3;
   height: 1.5rem;
 }
 
@@ -16,4 +18,8 @@ body {
 .form-group {
   gap: 0.5rem;
   margin-bottom: 1rem;
+}
+
+input[placeholder] {
+  color: rgb(136 136 136 / 0.88);
 }
