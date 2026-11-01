@@ -41,3 +41,5 @@ build/
 application-local.properties
 application-local.yml
 application-local.yaml
+/src/main/java/com/sce/platform/usuarios/service/PrimerAdministradorService.java
+/src/main/java/com/sce/platform/usuarios/service/PrimerAdministradorInitializer.java
