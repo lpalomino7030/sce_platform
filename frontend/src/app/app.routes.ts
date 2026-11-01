@@ -5,6 +5,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { SeleccionarTenant } from './auth/seleccionar-tenant/seleccionar-tenant';
 import {PlatformDashboard} from './platform-dashboard/platform-dashboard';
 import {platformGuard} from './core/guards/platform.guard';
+import {LandingPage} from './dashboard/landing-page/landing-page';
 
 export const routes: Routes = [ {
   path: 'login',
@@ -14,6 +15,12 @@ export const routes: Routes = [ {
     path: 'dashboard',
     component: Dashboard,
     canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        component: LandingPage
+      }
+    ]
   },
   {
     path: 'seleccionar',
