@@ -1,1 +1,25 @@
-<p>layout works!</p>
+<div class="dashboard">
+  <aside class="sidebar">
+    <h2>{{ title }}</h2>
+
+    <nav>
+      @for (item of menuItems; track item.route) {
+      <a
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{
+            exact: item.exact ?? false
+          }"
+      >
+        {{ item.label }}
+      </a>
+      }
+
+      <button class="logout" (click)="cerrarSesion()"> Cerrar Sesion </button>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

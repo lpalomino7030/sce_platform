@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import {Sidebar} from '../shared/sidebar/sidebar';
-
+import { Layout, MenuItem } from '../shared/layout/layout';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterOutlet, Sidebar],
+  imports: [Layout],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
-
+  menuItems: MenuItem[] = [
+    { label: 'Inicio', route: '/dashboard', exact: true },
+    { label: 'Perfil', route: '/dashboard/perfil' },
+    { label: 'Reportes', route: '/dashboard/reportes' }
+  ];
 }
