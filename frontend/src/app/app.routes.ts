@@ -7,6 +7,7 @@ import {PlatformDashboard} from './platform-dashboard/platform-dashboard';
 import {platformGuard} from './core/guards/platform.guard';
 import {LandingPage} from './dashboard/landing-page/landing-page';
 import {Inicio} from './platform-dashboard/inicio/inicio';
+import {QuotesPage} from './dashboard/quotes-page/quotes-page';
 
 export const routes: Routes = [ {
   path: 'login',
@@ -20,6 +21,10 @@ export const routes: Routes = [ {
       {
         path: '',
         component: LandingPage
+      },
+      {
+        path: 'cotizaciones',
+        component: QuotesPage
       }
     ]
   },

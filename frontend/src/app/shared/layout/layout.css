@@ -13,11 +13,14 @@
   padding: 1.5rem 1rem;
   background: #1f2937;
   color: #fff;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar h2 {
   margin: 0 0 2rem;
   font-size: 1.1rem;
+
 }
 
 .sidebar nav {
@@ -66,7 +69,12 @@
   .dashboard {
     grid-template-columns: 1fr;
   }
-
+ .sidebar {
+   flex-direction: row;
+   max-height: 1.4rem;
+   align-items: center;
+   justify-content: space-between;
+ }
   .sidebar nav {
     flex-direction: row;
     flex-wrap: wrap;

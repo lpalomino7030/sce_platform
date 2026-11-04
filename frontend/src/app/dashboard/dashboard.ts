@@ -11,6 +11,7 @@ export class Dashboard {
   menuItems: MenuItem[] = [
     { label: 'Inicio', route: '/dashboard', exact: true },
     { label: 'Perfil', route: '/dashboard/perfil' },
+    { label: 'Cotizaciones', route: '/dashboard/cotizaciones' },
     { label: 'Reportes', route: '/dashboard/reportes' }
   ];
 }
