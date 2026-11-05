@@ -12,6 +12,5 @@ export class CardQuotesReports {
   count=input<string>();
   icon=input<string>();
   suggestion=input<string>();
-  backgroundColor=input<string>();
 
 }

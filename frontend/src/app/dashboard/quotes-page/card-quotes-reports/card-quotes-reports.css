@@ -1,8 +1,20 @@
-.card-report-item{
+.card-quotes-report-info{
   display: flex;
-  height: 100%;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
-
 .card-quotes-report-info p{
   margin: 0;
+}
+
+.legend-card{
+  font-size: 12px;
+}
+.count-legend-card{
+  font-size: 20px;
+  font-weight: bold;
+
+}
+.legend-card-tittle{
+  font-weight: bold;
 }

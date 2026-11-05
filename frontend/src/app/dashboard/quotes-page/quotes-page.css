@@ -24,14 +24,7 @@
   display: flex;
   gap: 2px;
 }
-.group-card-reports{
-  display: flex;
-  gap: 10px;
-  width: 100%;
-  height: 15%;
-  background: coral;
-  margin: 5px 0;
-}
+
 .btn-table-mode,.btn-kanban-mode, .btn-newquote{
   display: flex;
   align-items: center;
@@ -55,6 +48,22 @@ color: #bbbdc3;
 .btn-table-mode:hover, .btn-newquote:hover{
   color: #fff;
   background: #3e9752;
+}
+
+
+.group-card-reports {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  height: 15%;
+  margin: 5px 0;
+}
+.card-reports-item{
+  height: 100%;
+  width: 24%;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 30% 1fr;
 }
 
 

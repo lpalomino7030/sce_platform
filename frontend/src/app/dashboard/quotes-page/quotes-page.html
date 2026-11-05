@@ -1,6 +1,7 @@
 <div class="quotes-tittle">
   <p class="quotes-page-tittle">Cotizaciones</p>
-  <small class="quotes-page-description">Administra, consulta y realiza seguimiento de tus propuestas comerciales.</small>
+  <small class="quotes-page-description">Administra, consulta y realiza seguimiento de tus propuestas
+    comerciales.</small>
 
 </div>
 <div class="mode-quotes-group">
@@ -12,31 +13,33 @@
 </div>
 <div class="group-card-reports">
   <app-card-quotes-reports
-  legend="lorem"
-  count="5"
-  suggestion="lorem"
-  backgroundColor="#444444"
-  />
-
-  <app-card-quotes-reports
-    legend="lorem"
+    class="card-reports-item"
+    legend="Total de cotizaciones"
     count="5"
     suggestion="lorem"
-    backgroundColor="#444444"
+    [style.background-color]="'#ADD8E655'"
   />
-
   <app-card-quotes-reports
-    legend="lorem"
+    class="card-reports-item"
+    legend="En negociacion"
     count="5"
     suggestion="lorem"
-    backgroundColor="#444444"
+    [style.background-color]="'#FAFAD255'"
   />
-
   <app-card-quotes-reports
-    legend="lorem"
+    class="card-reports-item"
+    legend="Aceptados"
     count="5"
     suggestion="lorem"
-    backgroundColor="#444444"
+    [style.background-color]="'#90EE9055'"
   />
+  <app-card-quotes-reports
+    class="card-reports-item"
+    legend="Valorizacion"
+    count="5"
+    suggestion="lorem"
+    [style.background-color]="'#c6a2e455'"
+  />
+
 
 </div>
