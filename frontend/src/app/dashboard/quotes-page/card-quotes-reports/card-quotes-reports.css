@@ -1,0 +1,8 @@
+.card-report-item{
+  display: flex;
+  height: 100%;
+}
+
+.card-quotes-report-info p{
+  margin: 0;
+}
