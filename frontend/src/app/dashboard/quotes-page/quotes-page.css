@@ -100,7 +100,8 @@ color: #bbbdc3;
 .table-design-quotes{
   flex-direction: column;
 }
-.quote-filters-table, .actions-filters-table{
+.quote-filters-table
+,.actions-filters-table{
   gap: 5px;
 }
 .clear-filters-table{
@@ -118,7 +119,6 @@ color: #bbbdc3;
 
 .filters-tools-table{
   width: 100%;
-  background: lightpink;
   height: 2.4rem;
   padding: 2px;
   font-weight: bold;
@@ -136,7 +136,22 @@ color: #bbbdc3;
   font-size: 12px;
   border: 1px solid rgb(208 208 209 / 0.72);
 }
-
-.quote-head-table, .item-table-quotes{
-
+input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  justify-self: center;
+}
+.quote-head-table,
+.item-table-quotes {
+  display: grid;
+  grid-template-columns: 40px repeat(8, minmax(0, 1fr));
+  align-items: center;
+  gap: 8px;
+}
+.client-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
