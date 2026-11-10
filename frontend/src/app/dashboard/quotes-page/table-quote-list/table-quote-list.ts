@@ -15,10 +15,18 @@ export class TableQuoteList {
   selectedStatus: string = '';
   selectedResponsible: string = '';
   misEstados = ['En negociación', 'Aprobada', 'Pendiente', 'Rechazada'];
+  misAuthors = ['María López', 'Juan Pérez', 'otros'];
+
 
   onStatusChange(estado: string): void {
-    console.log('Estado seleccionado en el padre:', estado);
+    this.selectedStatus = estado;
   }
+
+  onAuthorsChange(author: string): void {
+    this.selectedResponsible = author;
+  }
+
+
   quotes: Quote[] = [{
     codigo: 'COT-00129',
     cliente: 'Ferretería Lima S.A.C',
@@ -27,7 +35,7 @@ export class TableQuoteList {
     importe: 2450,
     estado: 'En negociación',
     responsable: 'Juan Pérez'
-  },  {
+  },{
     codigo: 'COT-00130',
     cliente: 'Comercial del Norte',
     emision: new Date(2025, 1, 10),
