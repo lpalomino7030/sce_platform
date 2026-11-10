@@ -14,6 +14,10 @@
         <option value="Pendiente">Pendiente</option>
       </select>
 
+      <app-custom-dropdown [statuses]="misEstados"
+      [placeholder]="'Selecciona un estado'"
+      (statusSelected)="onStatusChange($event)" />
+
       <div class="boxing-table"> Fecha </div>
       <select
         class="boxing-table"
@@ -72,4 +76,6 @@
     </div>
     }
   </div>
+
+
 </div>

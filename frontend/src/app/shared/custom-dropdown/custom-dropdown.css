@@ -1,0 +1,97 @@
+/* Contenedor principal */
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+  min-width: 200px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Botón disparador (trigger) */
+.dropdown-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 7px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-trigger:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.dropdown-trigger:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Flecha indicador */
+.dropdown-trigger span {
+  font-size: 12px;
+  margin-left: 8px;
+  color: #6b7280;
+  transition: transform 0.2s ease;
+}
+
+/* Panel flotante de opciones */
+.dropdown-options {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  max-height: 240px;
+  overflow-y: auto;
+  animation: fadeIn 0.15s ease-out;
+}
+
+/* Botón de cada opción */
+.dropdown-option {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #374151;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dropdown-option:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.dropdown-option:active {
+  background-color: #e5e7eb;
+}
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

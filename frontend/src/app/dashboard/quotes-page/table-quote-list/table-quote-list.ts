@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import {Quote} from '../model/Quotes';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {CustomDropdown} from '../../../shared/custom-dropdown/custom-dropdown';
 
 @Component({
   selector: 'app-table-quote-list',
-  imports: [DatePipe,FormsModule],
+  imports: [DatePipe,FormsModule,CustomDropdown],
   templateUrl: './table-quote-list.html',
   styleUrl: './table-quote-list.css',
 })
@@ -13,7 +14,11 @@ export class TableQuoteList {
   searchText: string = '';
   selectedStatus: string = '';
   selectedResponsible: string = '';
+  misEstados = ['En negociación', 'Aprobada', 'Pendiente', 'Rechazada'];
 
+  onStatusChange(estado: string): void {
+    console.log('Estado seleccionado en el padre:', estado);
+  }
   quotes: Quote[] = [{
     codigo: 'COT-00129',
     cliente: 'Ferretería Lima S.A.C',
