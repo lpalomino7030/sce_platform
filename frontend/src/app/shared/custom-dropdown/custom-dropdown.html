@@ -1,0 +1,28 @@
+<div class="custom-dropdown">
+
+  <button
+    type="button"
+    class="dropdown-trigger"
+    (click)="toggleStatusDropdown()"
+  >
+    {{ selectedStatus || placeholder }}
+    <span>⌄</span>
+  </button>
+
+  @if (showStatusDropdown) {
+  <div class="dropdown-options">
+
+    @for (status of statuses; track status) {
+    <button
+      type="button"
+      class="dropdown-option"
+      (click)="selectStatus(status)"
+    >
+      {{ status }}
+    </button>
+    }
+
+  </div>
+  }
+
+</div>

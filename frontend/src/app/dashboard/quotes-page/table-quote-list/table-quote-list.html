@@ -1,0 +1,75 @@
+<div class="table-design-quotes">
+  <div class="filters-tools-table">
+    <div class="quote-filters-table">
+      <input class="input-filter-table" placeholder="Buscar por codigo, cliente o contacto" [(ngModel)]="searchText" type="text" name="searchText">
+<!--      <div class="boxing-table"> Estado </div>-->
+      <select
+        class="boxing-table"
+        [(ngModel)]="selectedStatus"
+        name="selectedStatus"
+      >
+        <option value="">Todos los estados</option>
+        <option value="En negociación">En negociación</option>
+        <option value="Aprobada">Aprobada</option>
+        <option value="Pendiente">Pendiente</option>
+      </select>
+
+      <div class="boxing-table"> Fecha </div>
+      <select
+        class="boxing-table"
+        [(ngModel)]="selectedResponsible"
+        name="selectedResponsible"
+      >
+        <option value="">Todos los responsables</option>
+        <option value="Juan Pérez">Juan Pérez</option>
+        <option value="María López">María López</option>
+        <option value="Carlos Ruiz">Carlos Ruiz</option>
+      </select>
+    </div>
+    <div class="clear-filters-table" >
+      <button type="button" (click)="clearFilters()">Limpiar filtros</button>
+    </div>
+    <div class="actions-filters-table">
+      <div class="boxing-table">Acciones</div>
+      <div class="boxing-table">Exportar</div>
+    </div>
+  </div>
+  <div class="body-table-quotes">
+    <div class="quote-head-table" role="row">
+      <input type="checkbox" name="" id="">
+      <p role="columnheader">Código</p>
+      <p role="columnheader">Cliente</p>
+      <p role="columnheader">Fecha emisión</p>
+      <p role="columnheader">Fecha Validez</p>
+      <p role="columnheader">Importe</p>
+      <p role="columnheader">Estado</p>
+      <p role="columnheader">Responsable</p>
+      <p role="columnheader">Acciones</p>
+    </div>
+    @for (quote of filteredQuotes; track quote.codigo){
+    <div class="item-table-quotes" role="row">
+      <input type="checkbox" name="" id="selectedItemQuotes">
+      <a href="#">{{ quote.codigo}}</a>
+      <small class="client-name">{{ quote.cliente }}</small>
+      <small>{{ quote.emision | date:'dd-MMM-yyyy' }}</small>
+      <small>{{ quote.validez | date:'dd-MMM-yyyy' }}</small>
+      <small><strong> S/. {{ quote.importe.toFixed(2) }}</strong></small>
+      <small>{{ quote.estado }}</small>
+      <div class="author-item-table">
+        <small>Jp</small>
+        <small>{{ quote.responsable }}</small>
+      </div>
+      <div class="tools-item-table">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+      </div>
+
+
+    </div>} @empty {
+    <div class="empty-table">
+      No se encontraron cotizaciones.
+    </div>
+    }
+  </div>
+</div>
