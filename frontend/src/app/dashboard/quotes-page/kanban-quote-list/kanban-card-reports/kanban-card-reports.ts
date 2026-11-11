@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, input, Input} from '@angular/core';
 
 @Component({
   selector: 'app-kanban-card-reports',
@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './kanban-card-reports.css',
 })
 export class KanbanCardReports {
+titulo=input.required<string>();
 
 }
