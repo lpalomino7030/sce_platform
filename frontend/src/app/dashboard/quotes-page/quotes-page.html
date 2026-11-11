@@ -6,11 +6,12 @@
 </div>
 <div class="mode-quotes-group">
   <div class="card-mode-quotes">
-    <div class="btn-table-mode">Tabla</div>
-    <div class="btn-kanban-mode">Kanban</div>
+    <div class="btn-table-mode" (click)="onChangeVista('Tabla')">Tabla</div>
+    <div class="btn-kanban-mode" (click)="onChangeVista('Kanban')">Kanban</div>
   </div>
   <div class="btn-newquote">Nueva cotizacion</div>
 </div>
+@if (selectedVista === 'Tabla') {
 <div class="group-card-reports">
   <app-card-quotes-reports
     class="card-reports-item"
@@ -44,3 +45,11 @@
 
 </div>
 <app-table-quote-list/>
+}
+<!--@if (selectedVista === 'Tabla') {-->
+<!--<div>Aquí va el contenido de la lista</div>-->
+<!--}-->
+
+@if (selectedVista === 'Kanban') {
+<div>Aquí va el contenido en cuadrícula</div>
+}

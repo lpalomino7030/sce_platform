@@ -38,8 +38,8 @@
                            (statusSelected)="onAuthorsChange($event)" />
 
     </div>
-    <div class="clear-filters-table" >
-      <button class="clear-filters-table" type="button" (click)="clearFilters()">Limpiar filtros</button>
+    <div class="clear-filters-table" (click)="clearFilters()">
+      <p>Limpiar filtros</p>
     </div>
     <div class="actions-filters-table">
       <div class="boxing-table">Acciones</div>

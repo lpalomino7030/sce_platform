@@ -9,5 +9,10 @@ import {TableQuoteList} from './table-quote-list/table-quote-list';
   styleUrl: './quotes-page.css',
 })
 export class QuotesPage {
+  selectedVista: String = 'Tabla';
+ modoVista :string[] =['Tabla', 'kanban'];
 
+ onChangeVista(vista:String){
+   this.selectedVista = vista;
+ }
 }
