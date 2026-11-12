@@ -4,14 +4,19 @@
   flex-direction: column;
   gap: 5px;
   background: lightblue;
+  border-radius: 10px;
+  padding: 5px;
 }
 
 .kanban-card-item{
   display: flex;
   flex-direction: column;
   gap: 2px;
+  height: 120px;
   border-radius: 10px ;
   background: white;
+  padding: 5px;
+
 }
 .kanban-card-item p{
   margin: 0;
@@ -22,6 +27,7 @@
   flex-direction: row;
   justify-content: space-around;
   gap: 5px;
+  align-items: center;
 }
 
 .kanban-card-tittle{
@@ -32,10 +38,13 @@
 
 .kanban-count-items{
   height: 16px;
-  width: 16px;
-  border-radius: 50%;
+  width: 18px;
+  border-radius: 8px;
   font-size: 10px;
   background: #c3c8d5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .kanban-tittle{
@@ -43,29 +52,36 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 5px;
-  height: 45px;
+  height: 25%;
   background: lightcoral;
 }
+.kanban-info{
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  gap: 2px;
+  height: 50%;
+  background: lightseagreen;
+}
 
+.kanban-date{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 25%;
+  background: lightgreen;
+}
 .kanban-tittle-item{
   color: #2563eb;
   font-size: 14px;
   font-weight: bold;
 }
-.kanban-info{
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  background: lightgreen;
-}
-.kanban-info-bussines{
 
+
+.kanban-info-bussines{
+font-size: 12px;
 }
 .kanban-info-cash{
   font-weight: bold;
 }
-.kanban-date{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
+

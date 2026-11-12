@@ -2,36 +2,12 @@
   <div class="filters-tools-table">
     <div class="quote-filters-table">
       <input class="input-filter-table" placeholder="Buscar por codigo, cliente o contacto" [(ngModel)]="searchText" type="text" name="searchText">
-<!--      <div class="boxing-table"> Estado </div>-->
-<!--      <select-->
-<!--        class="boxing-table"-->
-<!--        [(ngModel)]="selectedStatus"-->
-<!--        name="selectedStatus"-->
-<!--      >-->
-<!--        <option value="">Todos los estados</option>-->
-<!--        <option value="En negociación">En negociación</option>-->
-<!--        <option value="Aprobada">Aprobada</option>-->
-<!--        <option value="Pendiente">Pendiente</option>-->
-<!--      </select>-->
 
       <app-custom-dropdown [statuses]="misEstados"
       [placeholder]="'Selecciona un estado'"
       (statusSelected)="onStatusChange($event)" />
 
-
-
       <div class="boxing-table"> <input type="date" name="fecha" id=""> </div>
-
-<!--      <select-->
-<!--        class="boxing-table"-->
-<!--        [(ngModel)]="selectedResponsible"-->
-<!--        name="selectedResponsible"-->
-<!--      >-->
-<!--        <option value="">Todos los responsables</option>-->
-<!--        <option value="Juan Pérez">Juan Pérez</option>-->
-<!--        <option value="María López">María López</option>-->
-<!--        <option value="Carlos Ruiz">Carlos Ruiz</option>-->
-<!--      </select>-->
 
       <app-custom-dropdown [statuses]="misAuthors"
                            [placeholder]="'Selecciona un responsable'"
