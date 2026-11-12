@@ -1,1 +1,71 @@
+.kanban-card-content{
+  display: flex;
+  min-height: 200px;
+  flex-direction: column;
+  gap: 5px;
+  background: lightblue;
+}
 
+.kanban-card-item{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-radius: 10px ;
+  background: white;
+}
+.kanban-card-item p{
+  margin: 0;
+  padding: 0;
+}
+.kanban-card-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 5px;
+}
+
+.kanban-card-tittle{
+  font-weight: 500;
+  font-size: 14px;
+
+}
+
+.kanban-count-items{
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  font-size: 10px;
+  background: #c3c8d5;
+}
+
+.kanban-tittle{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
+  height: 45px;
+  background: lightcoral;
+}
+
+.kanban-tittle-item{
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: bold;
+}
+.kanban-info{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: lightgreen;
+}
+.kanban-info-bussines{
+
+}
+.kanban-info-cash{
+  font-weight: bold;
+}
+.kanban-date{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
