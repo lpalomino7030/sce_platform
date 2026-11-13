@@ -7,6 +7,14 @@
   padding: 5px;
 }
 
+.kanban-element{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+
+}
+
 .kanban-card-item{
   display: flex;
   flex-direction: column;
@@ -80,3 +88,13 @@ font-size: 12px;
   font-weight: bold;
 }
 
+.kanban-subname{
+  background: orange;
+  font-size: 10px;
+  font-weight: bold;
+  border: 1px solid #e4e4e4;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+}

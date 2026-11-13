@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import {Quote} from '../model/Quotes';
-import {DatePipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {CustomDropdown} from '../../../shared/custom-dropdown/custom-dropdown';
 
 @Component({
   selector: 'app-filters-header',
-  imports: [DatePipe,FormsModule,CustomDropdown],
+  imports: [FormsModule,CustomDropdown],
   templateUrl: './filters-header.html',
   styleUrl: './filters-header.css',
 })

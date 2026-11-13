@@ -1,27 +1,32 @@
 
 <div class="kanban-card-content" [style.background-color]="backgroundsColor()">
   <div class="kanban-card-header">
-    <div>i</div>
+    <div> <ng-icon [name]="icono()" size="18"></ng-icon> </div>
     <p class="kanban-card-tittle">
       {{titulo()}}
     </p>
     <div class="kanban-count-items">12</div>
-    <div>i</div>
-    </div>
+    <ng-icon name="lucidePlus" size="18"></ng-icon>
+  </div>
   <div>
 
     <div class="kanban-card-item">
       <div class="kanban-tittle">
-        <p class="kanban-tittle-item">COT-00126</p>
-        <div>i</div>
+          <p class="kanban-tittle-item">COT-00126</p>
+        <ng-icon name="lucideEllipsisVertical" size="18"></ng-icon>
       </div>
       <div class="kanban-info">
-        <p class="kanban-info-bussines">Constructora</p>
+        <div class="kanban-element">
+        <ng-icon name="lucideBuilding2" size="18"></ng-icon>
+        <p class="kanban-info-bussines">Constructora</p></div>
         <p class="kanban-info-cash">S/. 1200,00</p>
       </div>
       <div class="kanban-date">
+        <div class="kanban-element">
+        <ng-icon name="lucideCalendar" size="18"></ng-icon>
         <div>fecha</div>
-        <div>MG</div>
+        </div>
+        <div class="kanban-subname">MG</div>
       </div>
 
     </div>

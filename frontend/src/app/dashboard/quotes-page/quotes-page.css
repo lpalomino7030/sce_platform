@@ -50,6 +50,10 @@ color: #bbbdc3;
   color: #fff;
   background: #3e9752;
 }
+.btn-table-mode, .btn-kanban-mode{
+  gap: 5px;
+  font-weight: 500;
+}
 
 
 .group-card-reports {

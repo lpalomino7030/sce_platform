@@ -1,14 +1,12 @@
 import { Component, input } from '@angular/core';
 import {KanbanCardReports} from './kanban-card-reports/kanban-card-reports';
 import {Quote} from '../model/Quotes';
-import {CustomDropdown} from '../../../shared/custom-dropdown/custom-dropdown';
-import {DatePipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {FiltersHeader} from '../filters-header/filters-header';
 
 @Component({
   selector: 'app-kanban-quote-list',
-  imports: [KanbanCardReports,CustomDropdown, DatePipe,FormsModule, FiltersHeader ],
+  imports: [KanbanCardReports,FormsModule, FiltersHeader ],
   templateUrl: './kanban-quote-list.html',
   styleUrl: './kanban-quote-list.css',
 })

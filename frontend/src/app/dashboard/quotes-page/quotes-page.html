@@ -6,8 +6,14 @@
 </div>
 <div class="mode-quotes-group">
   <div class="card-mode-quotes">
-    <div class="btn-table-mode" (click)="onChangeVista('Tabla')">Tabla</div>
-    <div class="btn-kanban-mode" (click)="onChangeVista('Kanban')">Kanban</div>
+    <div class="btn-table-mode" (click)="onChangeVista('Tabla')">
+      <ng-icon name="lucideTable2" size="18"></ng-icon>
+      <p>Tabla</p>
+      </div>
+    <div class="btn-kanban-mode" (click)="onChangeVista('Kanban')">
+      <ng-icon name="lucideSquareKanban" size="18"></ng-icon>
+      <p>Kanban</p>
+      </div>
   </div>
   <div class="btn-newquote">Nueva cotizacion</div>
 </div>
