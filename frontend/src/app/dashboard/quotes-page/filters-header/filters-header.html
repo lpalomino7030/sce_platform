@@ -1,0 +1,23 @@
+<div class="filters-tools-table">
+  <div class="quote-filters-table">
+    <input class="input-filter-table" placeholder="Buscar por codigo, cliente o contacto" [(ngModel)]="searchText" type="text" name="searchText">
+
+    <app-custom-dropdown [statuses]="misEstados"
+                         [placeholder]="'Estado'"
+                         (statusSelected)="onStatusChange($event)" />
+
+    <div class="boxing-table"> <input type="date" name="fecha" id=""> </div>
+
+    <app-custom-dropdown [statuses]="misAuthors"
+                         [placeholder]="'Responsable'"
+                         (statusSelected)="onAuthorsChange($event)" />
+
+  </div>
+  <div class="clear-filters-table" (click)="clearFilters()">
+    <p>Limpiar filtros</p>
+  </div>
+<!--  <div class="actions-filters-table">-->
+<!--    <div class="boxing-table selectecAction">Acciones</div>-->
+<!--    <div class="boxing-table selectecAction">Exportar</div>-->
+<!--  </div>-->
+</div>

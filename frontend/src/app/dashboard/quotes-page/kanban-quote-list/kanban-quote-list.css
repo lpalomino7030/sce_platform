@@ -1,10 +1,14 @@
 .kanban-quote-list-container{
   display: flex;
-  flex-direction: row;
-  gap: 1rem;
+  flex-direction: column;
+  /*gap: 1rem;*/
   width: 100%;
-  background: lightgoldenrodyellow;
+
+}
+.kanban-quote-panel-items{
+  display: flex;
   margin-top: 10px;
+  gap: .5rem;
 }
 .card-container-kanban{
   width: 20%;
