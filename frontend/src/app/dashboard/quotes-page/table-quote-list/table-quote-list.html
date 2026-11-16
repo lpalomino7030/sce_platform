@@ -38,7 +38,10 @@
     <div class="item-table-quotes" role="row">
       <input type="checkbox" name="" id="selectedItemQuotes">
       <a href="#">{{ quote.codigo}}</a>
-      <small class="client-name">{{ quote.cliente }}</small>
+      <div class="name-quote-menber">
+        <ng-icon name="lucideBuilding2" size="16"></ng-icon>
+        <small class="client-name">{{ quote.cliente }}</small>
+      </div>
       <small>{{ quote.emision | date:'dd-MMM-yyyy' }}</small>
       <small>{{ quote.validez | date:'dd-MMM-yyyy' }}</small>
       <small><strong> S/. {{ quote.importe.toFixed(2) }}</strong></small>
@@ -48,9 +51,15 @@
         <small>{{ quote.responsable }}</small>
       </div>
       <div class="tools-item-table">
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
+        <div class="pointer">
+          <ng-icon name="lucideEye" size="16"></ng-icon>
+        </div>
+        <div class="pointer">
+          <ng-icon name="lucideCopy" size="16"></ng-icon>
+        </div>
+        <div class="pointer">
+          <ng-icon name="lucideEllipsisVertical" size="16"></ng-icon>
+        </div>
       </div>
 
 

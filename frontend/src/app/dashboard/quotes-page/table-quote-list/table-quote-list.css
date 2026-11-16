@@ -93,3 +93,16 @@ input[type="checkbox"] {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.tools-item-table{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.name-quote-menber{
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  align-items: center;
+}

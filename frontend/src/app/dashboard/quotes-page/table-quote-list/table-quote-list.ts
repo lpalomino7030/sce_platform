@@ -3,10 +3,11 @@ import {Quote} from '../model/Quotes';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {CustomDropdown} from '../../../shared/custom-dropdown/custom-dropdown';
+import {NgIcon} from '@ng-icons/core';
 
 @Component({
   selector: 'app-table-quote-list',
-  imports: [DatePipe,FormsModule,CustomDropdown],
+  imports: [DatePipe,FormsModule,CustomDropdown,NgIcon],
   templateUrl: './table-quote-list.html',
   styleUrl: './table-quote-list.css',
 })

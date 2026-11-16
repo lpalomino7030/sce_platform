@@ -23,3 +23,7 @@ body {
 input[placeholder] {
   color: rgb(136 136 136 / 0.88);
 }
+
+.pointer{
+  cursor: pointer;
+}
