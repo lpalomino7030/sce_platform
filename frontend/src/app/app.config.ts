@@ -9,7 +9,7 @@ import { provideIcons } from '@ng-icons/core';
 import {
   lucideFileText,
   lucideSend,
-  lucideHandshake,lucideTable2,lucideSquareKanban,
+  lucideHandshake,lucideTable2,lucideSquareKanban,lucideChevronDown,lucideHandCoins,
   lucideEllipsisVertical,lucideBuilding2,lucideCalendar,lucideCircleX,lucidePlus,lucideCircleCheckBig
 
 } from '@ng-icons/lucide';
@@ -22,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideIcons({
       lucideFileText,
       lucideSend,
-      lucideHandshake,lucideTable2,lucideSquareKanban,
+      lucideHandshake,lucideTable2,lucideSquareKanban,lucideChevronDown,lucideHandCoins,
       lucideEllipsisVertical,lucideBuilding2,lucideCalendar,lucideCircleX,lucidePlus,lucideCircleCheckBig
     }),
     provideHttpClient( withInterceptors([authInterceptor]))

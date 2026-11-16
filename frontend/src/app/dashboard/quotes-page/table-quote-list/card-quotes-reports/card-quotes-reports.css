@@ -19,5 +19,11 @@
   font-weight: bold;
 }
 
+.card-quote-icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
 
 /* Table*/

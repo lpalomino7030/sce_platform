@@ -4,13 +4,13 @@
       <input class="input-filter-table" placeholder="Buscar por codigo, cliente o contacto" [(ngModel)]="searchText" type="text" name="searchText">
 
       <app-custom-dropdown [statuses]="misEstados"
-      [placeholder]="'Selecciona un estado'"
+      [placeholder]="'Estado'"
       (statusSelected)="onStatusChange($event)" />
 
       <div class="boxing-table"> <input type="date" name="fecha" id=""> </div>
 
       <app-custom-dropdown [statuses]="misAuthors"
-                           [placeholder]="'Selecciona un responsable'"
+                           [placeholder]="'Responsable'"
                            (statusSelected)="onAuthorsChange($event)" />
 
     </div>

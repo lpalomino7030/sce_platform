@@ -6,7 +6,7 @@
     (click)="toggleStatusDropdown()"
   >
     {{ selectedStatus || placeholder }}
-    <span>⌄</span>
+    <ng-icon name="lucideChevronDown" size="18"></ng-icon>
   </button>
 
   @if (showStatusDropdown) {

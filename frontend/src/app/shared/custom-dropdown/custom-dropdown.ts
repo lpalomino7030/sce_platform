@@ -1,8 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {NgIcon} from '@ng-icons/core';
 
 @Component({
   selector: 'app-custom-dropdown',
-  imports: [],
+  imports: [NgIcon],
   templateUrl: './custom-dropdown.html',
   styleUrl: './custom-dropdown.css',
 })
