@@ -10,9 +10,9 @@ import { Layout, MenuItem } from '../shared/layout/layout';
 })
 export class PlatformDashboard {
   menuItems: MenuItem[] = [
-    { label: 'Inicio', route: '/dashboard', exact: true },
-    { label: 'Empresas', route: '/dashboard/perfil' },
-    { label: 'Reportes', route: '/dashboard/reportes' }
+    { label: 'Inicio', route: '/platform', exact: true },
+    { label: 'Empresas', route: '/platform/empresas' },
+    { label: 'Reportes', route: '/platform/reportes' }
   ];
 
 }

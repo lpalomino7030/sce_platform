@@ -8,6 +8,9 @@ import {platformGuard} from './core/guards/platform.guard';
 import {LandingPage} from './dashboard/landing-page/landing-page';
 import {Inicio} from './platform-dashboard/inicio/inicio';
 import {QuotesPage} from './dashboard/quotes-page/quotes-page';
+import {Tenants} from './platform-dashboard/tenants/tenants';
+import {Reportes} from './platform-dashboard/reportes/reportes';
+import {TenantCrear} from './platform-dashboard/tenants/crear/tenantCrear';
 
 export const routes: Routes = [ {
   path: 'login',
@@ -39,7 +42,19 @@ export const routes: Routes = [ {
     children:[{
       path:'',
       component:Inicio
-    }]
+    },
+      {
+        path:'empresas',
+        component:Tenants
+      },
+      {
+        path:'empresas/crear',
+        component:TenantCrear
+      },
+      {
+        path:'reportes',
+        component:Reportes
+      }]
   },
   {
     path: '',
